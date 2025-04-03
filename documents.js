@@ -72,7 +72,29 @@ document.addEventListener("DOMContentLoaded",()=>{
             contentTitle.innerHTML=data['title'];
             contentBody.innerHTML=data['body']
 
-            tabTitle.textContent = data['title'] === "" ? "새페이지" : data['title'];
+            document.addEventListener("DOMContentLoaded", () => {
+                document.querySelectorAll("#notionList a").forEach((pageLink) => {
+                    pageLink.addEventListener("click", (event) => {
+                        event.preventDefault(); // 기본 동작 방지
+                        updateTabTitle(event.target);
+                    });
+                });
+            });
+            
+            function updateTabTitle(clickedElement) {
+                let pageTitle = clickedElement.textContent.trim(); // 클릭한 페이지 제목 가져오기
+                let fullPath = pageTitle; // 기본적으로 선택된 페이지 제목
+            
+                // 하위 페이지 구조 찾기 (부모 요소 탐색)
+                let parent = clickedElement.closest("ul").previousElementSibling;
+                while (parent && parent.tagName === "A") {
+                    fullPath = parent.textContent.trim() + " > " + fullPath; // 부모 제목 추가
+                    parent = parent.closest("ul").previousElementSibling;
+                }
+            
+                tabTitle.textContent = fullPath === "" ? "새페이지" : fullPath; // 제목 업데이트
+            }
+            
 
             //컨텐츠가 변경이되면 기존  history 클리어
             history.back=[];
