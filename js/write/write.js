@@ -1,16 +1,17 @@
 document.addEventListener("DOMContentLoaded",()=>{
-
+    let pageHistory = [];
+    let pageHistoryNum = 0;
     let pageTitle;
     let pageText;
     let lineList;
-    let documentBtn = document.querySelectorAll('a[href="/page"]');
     let receivedData;// 현재 글 쓰그 있는 페이지 id 값
     const main = document.querySelector('main');
 
+    // href가 /page인 버튼 누르면 해당 페이지 생성
     document.addEventListener('click',(e)=>{
         let textLine = e.target;
         let linePrev = textLine.parentElement.previousElementSibling;
-    
+        pageHistoryNum++;
         if(textLine.getAttribute('href') == "/page"){
           console.log("1",e.target)
           e.preventDefault();
@@ -20,16 +21,24 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
     });
 
-
-    documentBtn.forEach((document,i)=>{
-        document.addEventListener("click", function(e){
-            e.preventDefault();
-            receivedData = e.currentTarget.id;
+    // 뒤로가기가 눌리면
+    window.addEventListener("popstate",(e)=>{
+        console.log(e);
+        if(pageHistoryNum > 0){
+            pageHistoryNum--;
+            receivedData = pageHistory[pageHistoryNum];
             routerAfter();
-        })
+        }
     });
-
+    // 앞으로가기 안댐
+    // window.addEventListener("pushstate",(e)=>{
+    //     pageHistoryNum++
+    //     receivedData = pageHistory[pageHistoryNum];
+    //     routerAfter();
+    // });
     function routerAfter(){
+        pageHistory[pageHistoryNum] = receivedData;
+        console.log(pageHistory,pageHistoryNum);
         setTimeout(()=>{
             pageTitle = main.querySelector('#pageTitle');
             pageText = main.querySelector('#pageText');
@@ -63,7 +72,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 }
             });
 
-        },100)
+        },50)
     }
     
      

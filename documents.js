@@ -35,8 +35,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
              //  삭제기능
              const deletePage = (data) => {
-                const API = 'https://kdt-api.fe.dev-cos.com/documents/' + data["id"]; // 삭제할 문서의 API 경로
-            
+                const API = 'https://kdt-api.fe.dev-cos.com/documents/'+ data["id"]; // 삭제할 문서의 API 경로
                 fetch(API, {
                     method: 'DELETE',
                     headers: {
