@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         })
 
     //페이지 만들기
-            const notionList = document.getElementById('notionList');
+        const notionList = document.getElementById('notionList');
         const makePageTitle = (data) =>{
              const li = document.createElement('li');
              const a = document.createElement('a');
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
              //  삭제기능
              const deletePage = (data) => {
-                const API = 'https://kdt-api.fe.dev-cos.com/documents/{documentId}'; // 삭제할 문서의 API 경로
+                const API = 'https://kdt-api.fe.dev-cos.com/documents/' + data["id"]; // 삭제할 문서의 API 경로
             
                 fetch(API, {
                     method: 'DELETE',
