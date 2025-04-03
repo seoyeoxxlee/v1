@@ -19,7 +19,7 @@
                 <button class="menu-toggle">«</button>
             </div>
             <div class="right_menu">
-                <div class="tab-bar">페이지명</div>
+                <div class="tab-bar" id="tabTitle">페이지명</div>
                 <input class="search" type="text" placeholder="검색">
             </div>
             
@@ -34,6 +34,7 @@
                     <a href="/documents">문서</a>
                     <button type="button" id="pageCreateButton">+</button>
                     <ul id="notionList">
+                        <span id="pageId" style="display: none;"></span>
                         <!-- <li><a href=""></a></li> -->
                     </ul>
                 </li>
@@ -51,9 +52,9 @@
 
         <main>
             <div class="content">
-                <h2>#Content</h2>
-                
-  
+                <h2 id="contentTitle">#Content</h2>
+                <div id="contentBody">내용</div>
+                <button id="pageSaveButton">저장</button>
             </div>
         </main>
 
