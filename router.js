@@ -34,8 +34,9 @@ async function handleLocation() {
       // 처음 로드된 화면으로 되돌리기
       document.querySelector("main").innerHTML = `
           <div class="content">
-                <h2>#Content</h2>
-            </div>
+            <h2>안녕하세요.</br></h2>
+            <h2>7팀의 <span class="oooh-baby-regular"> Noteflow</span> 입니다.</h2>
+          </div>
       `;
       return;
   }

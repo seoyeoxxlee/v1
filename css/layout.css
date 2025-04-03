@@ -11,6 +11,7 @@
 	font-style: normal;
 }
 
+
 * {
 	margin: 0;
 	padding: 0;
@@ -186,6 +187,8 @@ body {
 	color: #fff;
 }
 
+
+
 /* 사이드바 숨김 */
 .sidebar.hidden {
 	transform: translateX(-100%);
@@ -267,13 +270,34 @@ main {
 }
 
 .content {
-	background: #727184;
+	background: #fff;
 	padding: 20px;
 	border-radius: 6px;
 	overflow-y: auto; /* 내용이 많으면 스크롤 */
 	flex-grow: 1; /* 남는 공간 차지하여 푸터를 아래로 밀어냄 */
+	line-height: 1.6;
 }
-
+.content > h2 {
+	font-weight: 400;
+	color: #000000;
+	letter-spacing: 1px;
+}
+.dark-mode .content > h2{
+	color: #ffd8d8;
+}
+.content .oooh-baby-regular {
+	font-family: "Oooh Baby", cursive;
+	font-weight:800;
+	font-style: normal;
+	color: #000000;
+}
+.dark-mode .content .oooh-baby-regular {
+	color: #ffd8d8;
+}
+.dark-mode .content {
+	color: #1e1d28;
+	background-color: #1e1d28;
+}
 .dynamic-content {
 	background: rgb(201, 53, 68);
 	border-radius: 6px;
