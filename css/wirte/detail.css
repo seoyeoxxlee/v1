@@ -14,7 +14,7 @@
 .line:hover .text{background: #9bcbfc31;}
 .line .subPage{display: inline-block; background: url(/images/page.png) no-repeat left top / 20px 20px; color: #000; border-bottom: 2px dashed #ddd; text-decoration: none; padding: 0 4px 0 20px; letter-spacing: -0.025em; box-sizing: border-box; height: 24px;}
 
-
+div[contenteditable=true]{border: 0;}
 /* 플러스아이콘 */
 .material-symbols-outlined {
     opacity: 0.5;
