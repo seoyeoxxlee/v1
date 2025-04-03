@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         let linePrev = textLine.parentElement.previousElementSibling;
     
         if(textLine.getAttribute('href') == "/page"){
-          console.log(e.target)
+          console.log("1",e.target)
           e.preventDefault();
           e.target.addEventListener("click", router(e));
           receivedData = e.target.id;
@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
     
 
-    //하위페이지 생성 버튼
+    //하위페이지 이름 바뀌는 기능
     document.addEventListener('click',(e)=>{
         
         let subPageCreateBtn = e.target.parentElement;
@@ -237,9 +237,11 @@ document.addEventListener("DOMContentLoaded",()=>{
             })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json);
                 subPageCreateBtn.parentElement.parentElement.querySelector('.text').append(subPageCreate(json)); 
-                save()
+                save();
+                // 하위 페이지 생성 버튼 누르자 마자 하위페이지로 이동
+                receivedData = json["id"];
+                routerAfter(); 
             })
 
         }
@@ -247,22 +249,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     function subPageCreate(data){
         const subPageLine = document.createElement('a');
         subPageLine.classList.add('subPage');
-        subPageLine.href = "/pages/page.html?"+data["id"];
+        subPageLine.href = "/page";
         subPageLine.setAttribute("contenteditable",'false');
         subPageLine.id = data["id"];
         subPageLine.textContent = data['title'] ==""?"새페이지":data["title"];
         subPageLine.addEventListener('click',(e)=>{
             e.preventDefault();
-            fetch(API+"/"+e.currentTarget.id,{
-                headers: {
-                    "x-username" : "team7_pages"
-                },
-                })
-                .then((response) => response.json())
-                .then((json) =>{
-                    // setContents(json)
-                    location.href = 'page.html?'+json["id"]+'?';
-                })
         });
        
         return subPageLine;

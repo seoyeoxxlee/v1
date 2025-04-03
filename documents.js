@@ -3,23 +3,20 @@ document.addEventListener("DOMContentLoaded",()=>{
     const API = 'https://kdt-api.fe.dev-cos.com/documents';
     const pageCreateButton = document.getElementById('pageCreateButton');
     pageCreateButton.addEventListener('click',(event)=>{
-        const pageCreateButton = document.getElementById('pageCreateButton');
-        pageCreateButton.addEventListener('click',(event)=>{
-            fetch(API, {
-                method: 'POST',
-                body: JSON.stringify({
-                    title:'',
-                    parent: null
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                    "x-username" : "team7_pages"
-                },
-            })
-            .then((response) => response.json())
-            .then((json) => makePageTitle(json))
+        fetch(API, {
+            method: 'POST',
+            body: JSON.stringify({
+                title:'',
+                parent: null
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                "x-username" : "team7_pages"
+            },
         })
-    });
+        .then((response) => response.json())
+        .then((json) => makePageTitle(json))
+    })
 
     //페이지 만들기
             const notionList = document.getElementById('notionList');
