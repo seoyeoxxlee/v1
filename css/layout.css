@@ -203,6 +203,31 @@ footer {
     border-top-left-radius: 6px;
 }
 
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.modal-content {
+    position: relative;
+    left:50px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    cursor: pointer;
+}
 
 
 
