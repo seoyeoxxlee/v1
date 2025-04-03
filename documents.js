@@ -2,21 +2,21 @@ document.addEventListener("DOMContentLoaded",()=>{
     // API
     const API = 'https://kdt-api.fe.dev-cos.com/documents';
     const pageCreateButton = document.getElementById('pageCreateButton');
-    pageCreateButton.addEventListener('click',(event)=>{
-        fetch(API, {
-            method: 'POST',
-            body: JSON.stringify({
-                title:'',
-                parent: null
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                "x-username" : "team7_pages"
-            },
+        pageCreateButton.addEventListener('click',(event)=>{
+            fetch(API, {
+                method: 'POST',
+                body: JSON.stringify({
+                    title:'',
+                    parent: null
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    "x-username" : "team7_pages"
+                },
+            })
+            .then((response) => response.json())
+            .then((json) => makePageTitle(json))
         })
-        .then((response) => response.json())
-        .then((json) => makePageTitle(json))
-    })
 
     //페이지 만들기
             const notionList = document.getElementById('notionList');
@@ -34,17 +34,42 @@ document.addEventListener("DOMContentLoaded",()=>{
              li.appendChild(a);
 
              //  삭제기능
-             const deleteBtn = document.createElement('a');
-             deleteBtn.textContent = "삭제"
-             deleteBtn.href = "#";
-             deleteBtn.addEventListener('click',(e)=>{e.preventDefault(); deletePage(data); e.target.parentElement.remove();})
-             li.append(deleteBtn);
-             notionList.appendChild(li)
-             if(sub.length != 0){
-                sub.forEach((subData)=>{
-                    makePageTitle(subData)
+             const deletePage = (data) => {
+                const API = 'https://kdt-api.fe.dev-cos.com/documents/{documentId}'; // 삭제할 문서의 API 경로
+            
+                fetch(API, {
+                    method: 'DELETE',
+                    headers: {
+                        "x-username": "team7_pages"
+                    }
                 })
-             }
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("삭제 실패!");
+                    }
+                    console.log(`페이지 ${data.id} 삭제 완료`);
+                })
+                .catch((error) => {
+                    console.error("삭제 중 오류 발생:", error);
+                });
+            };
+            
+            const deleteBtn = document.createElement('a');
+            deleteBtn.textContent = "삭제";
+            deleteBtn.href = "#";
+            
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+            
+                if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
+                    deletePage(data); // API에서 삭제 요청
+                    e.target.parentElement.remove(); // 화면에서 제거
+                }
+            });
+            
+            li.append(deleteBtn);
+            notionList.appendChild(li);
+            
            };
 
         // 페이지 목록 생성
@@ -189,72 +214,78 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 //검색 기능
 
-    const searchInput=document.querySelector(".search");
-    const searchModal=document.getElementById("searchModal");
-    const searchResults=document.getElementById("searchResults");
-    const closeBtn=document.querySelector(".close");
+const searchInput = document.querySelector(".search");
+const searchModal = document.getElementById("searchModal");
+const searchResults = document.getElementById("searchResults");
+const closeBtn = document.querySelector(".close");
 
-    searchInput.addEventListener("input",()=>{
-        const query=searchInput.value.trim();
-        if(query.length>1){
-            performSearch(query);
-        }
-        else{
-            searchResults.innerHTML="";
-            searchModal.style.display="none";
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.trim();
+    if (query.length > 0) {
+        performSearch(query);
+    } else {
+        searchResults.innerHTML = "";
+        searchModal.style.display = "none";
+    }
+});
+
+closeBtn.addEventListener("click", () => {
+    searchModal.style.display = "none";
+});
+
+function performSearch(query) {
+    const API_URL = "https://kdt-api.fe.dev-cos.com/documents"; // 올바른 API URL
+
+    fetch(API_URL, {
+        headers: {
+            "x-username": "team7_pages"
         }
     })
+    .then(response => response.json())
+    .then(pages => {
+        let results = [];
 
-    closeBtn.addEventListener("click",()=>{
-        searchModal.style.display="none";
-    })
+        pages.forEach(page => {
+            const pageTitle = page.title ? page.title.trim() : "";
+            const content = page.body ? page.body.trim() : "";
 
-    function performSearch(query){
-        fetch("http://localhost:3000/posts") //
-            .then(response=>response.json())
-            //.then(data=>console.log(data))
-            .then(pages=>{
-                let results=[];
-            
-                
-
-        pages.forEach(page=>{
-            const pageTitle=page.title ? page.title.trim() : "";
-            const content=page.body ? page.body.trim() : "";
-
-            
-            if(pageTitle.includes(query)||content.includes(query)){
+            if (pageTitle.includes(query) || content.includes(query)) {
                 results.push({
-                    title:pageTitle,
-                    id:page.id,
-                    isTitleMatch:pageTitle.includes(query)
-                })
+                    title: pageTitle,
+                    id: page.id,
+                    isTitleMatch: pageTitle.includes(query)
+                });
             }
-        })
-        showSearchResults(results,query);
+        });
+
+        showSearchResults(results, query);
     })
-        
-        
+    .catch(error => console.error("검색 중 오류 발생:", error));
+}
+
+function showSearchResults(results, query) {
+    searchResults.innerHTML = "";
+
+    if (results.length === 0) {
+        searchResults.innerHTML = "<li>검색 결과 없음</li>";
+    } else {
+        results.forEach(result => {
+            const li = document.createElement("li");
+            const highlightedTitle = result.title.replace(
+                new RegExp(query, "gi"),
+                (match) => `<mark>${match}</mark>`
+            );
+
+            li.innerHTML = `<strong>${highlightedTitle}</strong>`;
+            li.addEventListener("click", () => {
+                window.location.href = `/page/${result.id}`; // 페이지 이동
+            });
+
+            searchResults.appendChild(li);
+        });
     }
 
-    function showSearchResults(results,query){
-        const searchResults=document.getElementById("searchResults");
-        searchResults.innerHTML="";
+    searchModal.style.display = "block";
+}
 
-        if(results.length===0){
-            searchResults.innerHTML="<li>검색 결과 없음</li>"
-        }
-        else{
-            results.forEach(result=>{
-                const li=document.createElement("li");
-                    li.innerHTML=`<strong>${result.title}</strong> ${query}`;
-                
-                li.addEventListener("click",()=>{
-                    window.location.href=result.link;
-                })
-                searchResults.appendChild(li);
-            })
-        }
-        document.getElementById("searchModal").style.display="block";
-    }
 })
