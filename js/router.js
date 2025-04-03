@@ -1,3 +1,4 @@
+import { CalendarEventsBind } from "./calendar.js";
 const routes = {
 
   "/dashboard": "./pages/dashboard.html",
@@ -11,7 +12,7 @@ const routes = {
   "/account": "./pages/account.html",
 
   "/trashcan": "./pages/trashcan.html",
-
+ 
   "/page" : "./pages/page.html"
 
 };
@@ -29,7 +30,6 @@ function router(event) {
 // 경로에 따라 페이지 변경
 async function handleLocation() {
   const pathname = window.location.pathname;
-  
   if (pathname === "/" || pathname === "/index.html") {
       // 처음 로드된 화면으로 되돌리기
       document.querySelector("main").innerHTML = `
@@ -46,7 +46,44 @@ async function handleLocation() {
                     <div id="contentBody" contenteditable="true" placeholder="새페이지 내용"></div>
                 </div>
             </div>
-      `;
+
+            <div class="calendar">
+                <h3>달력</h3>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prevBtn">이전</button>
+                        <h2 id="currentMonth"></h2>
+                        <button id="nextBtn">다음</button>
+                    </div>
+                    <div class="calendar-days">
+                        <div class="day">일</div>
+                        <div class="day">월</div>
+                        <div class="day">화</div>
+                        <div class="day">수</div>
+                        <div class="day">목</div>
+                        <div class="day">금</div>
+                        <div class="day">토</div>
+                    </div>
+                    <div class="calendar-dates" id="calendarDates"></div>
+                </div>
+            </div>
+
+            <div id="popup" class="popup" style="display: none;">
+                <div class="popup-content">
+                    <span id="close-popup">×</span>
+                    <p id="selected-date"></p>
+                    <input id="calendar-title" type="text" placeholder="제목" />
+                    <input id="calendar-content" type="text" placeholder="내용" />
+                    <button id="insert-btn">저장</button>
+                    <button id="update-btn">수정</button>
+                    <button id="delete-btn">삭제</button>
+                </div>
+            </div>
+         `;
+
+        CalendarEventsBind();
+            
+  
       return;
   }
 
@@ -69,3 +106,5 @@ window.addEventListener("DOMContentLoaded", () => {
       el.addEventListener("click", router);
   });
 });
+
+
