@@ -16,7 +16,7 @@
         <header>
             <div class="left_menu">
                 <div class="oooh-baby-regular" id="logo_name"><a href="/dashboard">Noteflow</a></div>
-                <button class="menu-toggle">☰</button>
+                <button class="menu-toggle">«</button>
             </div>
             <div class="right_menu">
                 <div class="tab-bar">페이지명</div>
@@ -26,12 +26,22 @@
         </header>
         
         <aside id="sidebar" class="sidebar">
+
             <ul class="sideMenu_documents">
                 <li><a href="/dashboard">대시보드</a></li>
-                <li><a href="/documents">문서</a></li>
+
+                <li>
+                    <a href="/documents">문서</a>
+                    <button type="button" id="pageCreateButton">+</button>
+                    <ul id="notionList">
+                        <!-- <li><a href=""></a></li> -->
+                    </ul>
+                </li>
+
                 <li><a href="/folder">폴더</a></li>
                 <li><a href="/bookmark">즐겨찾기</a></li>
             </ul>
+
             <ul class="sideMenu_settings">
                 <li><a href="#">다크모드<button>토글버튼</button></a></li>
                 <li><a href="/account">계정</a></li>
@@ -42,52 +52,7 @@
         <main>
             <div class="content">
                 <h2>#Content</h2>
-                <p>바뀌는 컨텐츠 영역을 잡아줄 공동영역</p>
-
-                <div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                </div>
-                <div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                </div>
-                <div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                </div>
-                <div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                    <div class="dynamic-content">
-                        <p>각 페이지 별로 바뀌는 컨텐츠 영역</p>
-                    </div>
-                </div>
+                
   
             </div>
         </main>
@@ -97,6 +62,7 @@
         </footer>
     </div>
     <script src="./script.js"></script>
+    <script src="./documents.js"></script>
     <script src="router.js"></script>
 </body>
 </html>

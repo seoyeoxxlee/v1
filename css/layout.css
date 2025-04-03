@@ -71,6 +71,11 @@ html, body {
     text-decoration: none;
 }
 
+#notionList li {
+    margin: 10px 0;
+    font-size: 12px;
+}
+
 /* 사이드바 숨김 */
 .sidebar.hidden {
     transform: translateX(-100%);
