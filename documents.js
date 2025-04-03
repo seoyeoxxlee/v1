@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             const deleteBtn = document.createElement('a');
             deleteBtn.textContent = "삭제";
             deleteBtn.href = "#";
-            
+            deleteBtn.classList.add("deletePage");
             deleteBtn.addEventListener('click', (e) => {
                 e.preventDefault();
             
