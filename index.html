@@ -26,7 +26,18 @@
             </div>
             <div class="right_menu">
                 <div class="tab-bar" id="tabTitle">페이지명</div>
-                <input class="search" type="text" placeholder="검색">
+                <input class="search" type="text" id="searchInput" placeholder="검색">
+                <!-- <button id="searchButton">검색</button> -->
+                <!-- 검색 결과 모달 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>검색 결과</h2>
+        <ul id="searchResults"></ul> <!-- 검색 결과 리스트 -->
+    </div>
+</div>
+
+
             </div>
             
         </header>   

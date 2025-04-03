@@ -166,5 +166,76 @@ document.addEventListener("DOMContentLoaded",()=>{
                     history.back.push(contentBody.innerHTML);
                     contentBody.innerHTML= history.forward.pop();
                 })
+
+
+//검색 기능
+
+    const searchInput=document.querySelector(".search");
+    const searchModal=document.getElementById("searchModal");
+    const searchResults=document.getElementById("searchResults");
+    const closeBtn=document.querySelector(".close");
+
+    searchInput.addEventListener("input",()=>{
+        const query=searchInput.value.trim();
+        if(query.length>1){
+            performSearch(query);
+        }
+        else{
+            searchResults.innerHTML="";
+            searchModal.style.display="none";
+        }
+    })
+
+    closeBtn.addEventListener("click",()=>{
+        searchModal.style.display="none";
+    })
+
+    function performSearch(query){
+        fetch("http://localhost:3000/posts") //
+            .then(response=>response.json())
+            //.then(data=>console.log(data))
+            .then(pages=>{
+                let results=[];
+            
+                
+
+        pages.forEach(page=>{
+            const pageTitle=page.title ? page.title.trim() : "";
+            const content=page.body ? page.body.trim() : "";
+
+            
+            if(pageTitle.includes(query)||content.includes(query)){
+                results.push({
+                    title:pageTitle,
+                    id:page.id,
+                    isTitleMatch:pageTitle.includes(query)
+                })
+            }
+        })
+        showSearchResults(results,query);
+    })
         
+        
+    }
+
+    function showSearchResults(results,query){
+        const searchResults=document.getElementById("searchResults");
+        searchResults.innerHTML="";
+
+        if(results.length===0){
+            searchResults.innerHTML="<li>검색 결과 없음</li>"
+        }
+        else{
+            results.forEach(result=>{
+                const li=document.createElement("li");
+                    li.innerHTML=`<strong>${result.title}</strong> ${query}`;
+                
+                li.addEventListener("click",()=>{
+                    window.location.href=result.link;
+                })
+                searchResults.appendChild(li);
+            })
+        }
+        document.getElementById("searchModal").style.display="block";
+    }
 })
