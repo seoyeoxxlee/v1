@@ -86,22 +86,32 @@ document.addEventListener("DOMContentLoaded",()=>{
             //상단바에 현재 페이지명 뜨게
             const tabTitle = document.getElementById("tabTitle");
 
-            
-            
-            // 계층 구조를 대비한 경로 생성 함수
-            function getFullPath(page) {
-              let path = [];
-              
-              // 하위 페이지가 없더라도, 향후 parent가 추가될 가능성을 고려
-              while (page) {
-                path.unshift(page.title || "새페이지");
-                page = page.parent || null;  // parent가 없으면 종료
-              }
-              
-              return path.join(" > ");
-            }
-            
-            tabTitle.textContent = getFullPath(data);
+// 계층 구조를 대비한 경로 생성 함수
+function getFullPath(page) {
+  let path = [];
+  
+  while (page) {
+    path.unshift(page.title || "새페이지");
+    page = page.parent || null; // parent가 없으면 종료
+  }
+  
+  return path.join(" > ");
+}
+
+// 페이지(탭) 목록을 가져와 클릭 이벤트 추가
+const tabs = document.querySelectorAll(".tab"); // .tab 클래스를 가진 요소들 선택
+
+tabs.forEach(tab => {
+  tab.addEventListener("click", function () {
+    const pageData = {
+      title: this.textContent, // 클릭된 탭의 텍스트 사용
+      parent: null, // 예제에서는 부모 없음 (실제 데이터 구조에 맞게 수정 필요)
+    };
+    
+    tabTitle.textContent = getFullPath(pageData);
+  });
+});
+
             
 
             //컨텐츠가 변경이되면 기존  history 클리어
@@ -181,7 +191,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
 //검색 기능
-
+    //const API="https://kdt-api.fe.dev-cos.com/documents";
     const searchInput=document.querySelector(".search");
     const searchModal=document.getElementById("searchModal");
     const searchResults=document.getElementById("searchResults");
@@ -203,13 +213,15 @@ document.addEventListener("DOMContentLoaded",()=>{
     })
 
     function performSearch(query){
-        fetch("http://localhost:3000/posts") //
-            .then(response=>response.json())
-            //.then(data=>console.log(data))
-            .then(pages=>{
-                let results=[];
+        fetch(API,{
+            headers:{
+                "x-username":"team7_pages"
+            }
+        })
+        .then(response=>response.json())
+        .then(pages=>{
+            let results=[];
             
-                
 
         pages.forEach(page=>{
             const pageTitle=page.title ? page.title.trim() : "";
