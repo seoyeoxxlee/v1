@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noteflow</title>
+    
     <link rel="stylesheet" href="./css/layout.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,24 +16,15 @@
 
         <header>
             <div class="left_menu">
-                <div class="oooh-baby-regular" id="logo_name"><a href="/dashboard">Noteflow</a></div>
+                <div class="oooh-baby-regular" id="logo_name"><a href="/">Noteflow</a></div>
                 <button class="menu-toggle">«</button>
             </div>
             <div class="right_menu">
                 <div class="tab-bar" id="tabTitle">페이지명</div>
-                <input class="search" type="text" id="searchInput" placeholder="검색">
-                <!-- 검색 결과 모달 -->
-<div id="searchModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>검색 결과</h2>
-        <ul id="searchResults"></ul> <!-- 검색 결과 리스트 -->
-    </div>
-</div>
-
+                <input class="search" type="text" placeholder="검색">
             </div>
             
-        </header>
+        </header>   
         
         <aside id="sidebar" class="sidebar">
 
@@ -40,10 +32,12 @@
                 <li><a href="/dashboard">대시보드</a></li>
 
                 <li>
-                    <a href="/documents">문서</a>
-                    <button type="button" id="pageCreateButton">+</button>
+                    <div class="gnb_document">
+                        <a href="/documents">문서</a>
+                        <button type="button" id="pageCreateButton">+</button>
+                    </div>
+
                     <ul id="notionList">
-                        <span id="pageId" style="display: none;"></span>
                         <!-- <li><a href=""></a></li> -->
                     </ul>
                 </li>
@@ -53,7 +47,12 @@
             </ul>
 
             <ul class="sideMenu_settings">
-                <li><a href="#">다크모드<button>토글버튼</button></a></li>
+                <li>
+                    <div class="gnb_darkMode">
+                        <a href="#">다크모드</a>
+                    <button id="darkModeButton">토글</button>
+                    </div>
+                </li>
                 <li><a href="/account">계정</a></li>
                 <li><a href="/trashcan">휴지통</a></li>
             </ul>
@@ -61,9 +60,17 @@
 
         <main>
             <div class="content">
-                <h2 id="contentTitle">#Content</h2>
-                <div id="contentBody">내용</div>
-                <button id="pageSaveButton">저장</button>
+                <h2>#Content</h2>
+                <div>
+                    <button type="button" id="pageSaveButton">저장</button>
+                    <button type="button" id="historyBakButton">↩</button>
+                    <button type="button" id="historyForwardButton">↪</button>
+                    <div>
+                        pageID:<span id="pageId"></span>
+                    </div>
+                    <div id="contentTitle" contenteditable="true" placeholder="새페이지 제목"></div>
+                    <div id="contentBody" contenteditable="true" placeholder="새페이지 내용"></div>
+                </div>
             </div>
         </main>
 
@@ -71,8 +78,9 @@
             <div>#Footer</div>
         </footer>
     </div>
-    <script src="./script.js"></script>
-    <script src="./documents.js"></script>
+    
+    <script src="script.js"></script>
+    <script src="documents.js"></script>
     <script src="router.js"></script>
 </body>
 </html>

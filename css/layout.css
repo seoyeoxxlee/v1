@@ -23,6 +23,11 @@ body {
     display: flex;
 }
 
+body.dark-mode {
+    background-color: black;
+    color: white;
+}
+
 html, body {
     overflow: hidden;
     height: 100%;
@@ -71,9 +76,37 @@ html, body {
     text-decoration: none;
 }
 
+.gnb_document {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#pageCreateButton {
+    color: #fff;
+    font-size: 16px;
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    background: #313042;
+    border: none;
+}
+
 #notionList li {
-    margin: 10px 0;
+    margin: 5px 0 5px 10px;
     font-size: 12px;
+}
+
+.gnb_darkMode {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#darkModeButton {
+    color: #fff;
+    border: none;
+    background-color: #a52a2a;
 }
 
 /* 사이드바 숨김 */
@@ -187,6 +220,18 @@ main {
     margin-left: 0;
     width: 100%;
 }
+
+
+/* content */
+[contenteditable="true"]:empty::before{
+    content:attr(placeholder);
+    color:#999;
+}
+div[contenteditable=true]{
+    border: 1px dashed #aaa;
+    padding:5px
+}
+
 
 /* 푸터 스타일 */
 footer {

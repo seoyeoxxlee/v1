@@ -148,23 +148,23 @@ document.addEventListener("DOMContentLoaded",()=>{
                     }
                 })
 
-                // const historyBakButton = document.getElementById('historyBakButton');
-                // historyBakButton.addEventListener('click',(event)=>{
-                //     if(history.back.length == 0){
-                //         return;
-                //     }
-                //     history.forward.push(contentBody.innerHTML);
-                //     contentBody.innerHTML= history.back.pop();
-                //     //console.log(history)
-                // })
+                const historyBakButton = document.getElementById('historyBakButton');
+                historyBakButton.addEventListener('click',(event)=>{
+                    if(history.back.length == 0){
+                        return;
+                    }
+                    history.forward.push(contentBody.innerHTML);
+                    contentBody.innerHTML= history.back.pop();
+                    //console.log(history)
+                })
 
-                // const historyForwardButton = document.getElementById('historyForwardButton');
-                // historyForwardButton.addEventListener('click',(event) =>{
-                //     if(history.forward.length == 0){
-                //         return;
-                //     }
-                //     history.back.push(contentBody.innerHTML);
-                //     contentBody.innerHTML= history.forward.pop();
-                // })
+                const historyForwardButton = document.getElementById('historyForwardButton');
+                historyForwardButton.addEventListener('click',(event) =>{
+                    if(history.forward.length == 0){
+                        return;
+                    }
+                    history.back.push(contentBody.innerHTML);
+                    contentBody.innerHTML= history.forward.pop();
+                })
         
 })
