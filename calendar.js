@@ -7,7 +7,7 @@ const today = new Date();
 let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
 
-let selectedDate = null;
+let selectedDate = null; 
 let selectedDocId = null;
 
 async function renderCalendar() {
@@ -109,12 +109,18 @@ document.getElementById("close-popup").addEventListener("click", () => {
 
 //레이어 팝업 열기
 calendarDates.addEventListener("click", async (e) => {
-    //입력
+    //입력	
+	document.getElementById("calendar-title").value = "";  
+	document.getElementById("calendar-content").value = "";
+	
     if (e.target.classList.contains("date") && e.target.dataset.value) {
         selectedDate = e.target.dataset.value;
         document.getElementById("selected-date").textContent = selectedDate /*+ "일"*/;
         document.getElementById("popup").style.display = "flex";
-        return;
+		document.getElementById("insert-btn").style.display = "block";
+		document.getElementById("update-btn").style.display = "none";
+		document.getElementById("delete-btn").style.display = "none";
+		return;
     }
 
     //상세
@@ -143,6 +149,9 @@ calendarDates.addEventListener("click", async (e) => {
             document.getElementById("calendar-title").value = view.title;
             document.getElementById("calendar-content").value = view.content;
             document.getElementById("popup").style.display = "flex";
+			document.getElementById("insert-btn").style.display = "none";
+			document.getElementById("update-btn").style.display = "block";
+			document.getElementById("delete-btn").style.display = "block";
         } catch (err) {
             console.error("팝업 에러:", err);
             alert("팝업 에러");
@@ -152,9 +161,20 @@ calendarDates.addEventListener("click", async (e) => {
 
 // 저장
 document.getElementById("insert-btn").addEventListener("click", async () => {
-    const title = document.getElementById("calendar-title").value;
-    const content = document.getElementById("calendar-content").value;
+    const title = document.getElementById("calendar-title");
+    const content = document.getElementById("calendar-content");
     const cleanDate = selectedDate;
+	
+	if(!title.value){
+		alert("제목을 입력해주세요!");
+		title.focus();
+		return;
+	}
+	if(!content.value){
+		alert("내용을 입력해주세요!");
+		content.focus();
+		return;
+	}
 
     try {
         const documentCreateApi = await fetch("https://kdt-api.fe.dev-cos.com/documents", {
@@ -185,7 +205,7 @@ document.getElementById("insert-btn").addEventListener("click", async () => {
                 "x-username": "7team calendar",
             },
             body: JSON.stringify({
-                title: title,
+                title: title.value,
                 parent: CreateDoc.id,
             }),
         });
@@ -206,8 +226,8 @@ document.getElementById("insert-btn").addEventListener("click", async () => {
                 "x-username": "7team calendar",
             },
             body: JSON.stringify({
-                title: title,
-                content: content,
+                title: title.value,
+                content: content.value,
             }),
         });
 
@@ -217,10 +237,9 @@ document.getElementById("insert-btn").addEventListener("click", async () => {
             alert("일정 저장 실패: " + errorText);
             return;
         }
-
         document.getElementById("popup").style.display = "none";
         alert("일정이 저장되었습니다!");
-        await renderCalendar();
+		await renderCalendar();
     } catch (err) {
         console.error("저장 에러:", err);
         alert("저장 에러");
@@ -230,8 +249,19 @@ document.getElementById("insert-btn").addEventListener("click", async () => {
 //수정
 document.getElementById("update-btn").addEventListener("click", async () => {
     const docId = selectedDocId;
-    const title = document.getElementById("calendar-title").value;
-    const content = document.getElementById("calendar-content").value;
+    const title = document.getElementById("calendar-title");
+    const content = document.getElementById("calendar-content");
+
+	if(!title.value){
+		alert("제목을 입력해주세요!");
+		title.focus();
+		return;
+	}
+	if(!content.value){
+		alert("내용을 입력해주세요!");
+		content.focus();
+		return;
+	}
 
     try {
         const updateApi = await fetch("https://kdt-api.fe.dev-cos.com/documents/" + docId, {
@@ -241,8 +271,8 @@ document.getElementById("update-btn").addEventListener("click", async () => {
                 "x-username": "7team calendar",
             },
             body: JSON.stringify({
-                title: title,
-                content: content,
+                title: title.value,
+                content: content.value,
             }),
         });
 
@@ -255,7 +285,7 @@ document.getElementById("update-btn").addEventListener("click", async () => {
 
         document.getElementById("popup").style.display = "none";
         alert("일정이 수정되었습니다!");
-        await renderCalendar();
+		await renderCalendar();
     } catch (err) {
         console.error("수정 에러:", err);
         alert("수정 에러");
