@@ -1,11 +1,42 @@
 document.addEventListener("DOMContentLoaded",()=>{
+    
     let pageHistory = [];
     let pageHistoryNum = 0;
     let pageTitle;
     let pageText;
     let lineList;
     let receivedData;// 현재 글 쓰그 있는 페이지 id 값
+
     const main = document.querySelector('main');
+
+    const routes = {
+        "/page" : "./pages/page.html"
+    };
+    // 페이지를 변경하는 함수
+    function router(event) {
+        event.preventDefault();
+
+        const href = event.target.getAttribute("href");
+
+        window.history.pushState({ path: href }, "", href);
+        handleLocation();
+        routerAfter();
+    }
+    
+   // 경로에 따라 페이지 변경
+   async function handleLocation() {
+     const pathname = window.location.pathname;
+     const route = routes[pathname];
+     if (pathname === "/page") {
+        if (route) {
+            const data = await (await fetch(route)).text();
+            document.querySelector("main").innerHTML = data;
+            pageHistory[pageHistoryNum] = receivedData;
+            console.log(pageHistory,pageHistoryNum);
+        }
+     }
+   }
+
 
     // href가 /page인 버튼 누르면 해당 페이지 생성
     document.addEventListener('click',(e)=>{
@@ -17,7 +48,7 @@ document.addEventListener("DOMContentLoaded",()=>{
           e.preventDefault();
           e.target.addEventListener("click", router(e));
           receivedData = e.target.id;
-          routerAfter();
+        //   routerAfter();
         }
     });
 
@@ -37,8 +68,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     //     routerAfter();
     // });
     function routerAfter(){
-        pageHistory[pageHistoryNum] = receivedData;
-        console.log(pageHistory,pageHistoryNum);
+
         setTimeout(()=>{
             pageTitle = main.querySelector('#pageTitle');
             pageText = main.querySelector('#pageText');
@@ -72,7 +102,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 }
             });
 
-        },50)
+        },100)
     }
     
      
@@ -252,7 +282,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 save();
                 // 하위 페이지 생성 버튼 누르자 마자 하위페이지로 이동
                 receivedData = json["id"];
-                routerAfter();
+                // routerAfter();
             })
 
         }
