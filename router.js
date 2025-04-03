@@ -12,6 +12,8 @@ const routes = {
 
   "/trashcan": "./pages/trashcan.html",
 
+  "/page" : "./pages/page.html"
+
 };
 
 // 페이지를 변경하는 함수
