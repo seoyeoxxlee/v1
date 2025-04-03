@@ -68,7 +68,7 @@ async function renderCalendar() {
                         div.style.backgroundColor = "#e0f6ff";
                         // div.style.boxShadow = "1px 1px 10px rgba(0, 0, 0, 0.3), -1px -1px 10px rgba(0, 0, 0, 0.3)";
                         div.style.border = "1px solid #b4eaff";
-                        div.style.borderRadius = "2px";
+                        div.style.borderRadius = "5px";
                         div.style.margin = "3px";
                         dateElement.appendChild(div);
                     });
@@ -112,7 +112,7 @@ calendarDates.addEventListener("click", async (e) => {
     //입력
     if (e.target.classList.contains("date") && e.target.dataset.value) {
         selectedDate = e.target.dataset.value;
-        document.getElementById("selected-date").textContent = selectedDate + "일";
+        document.getElementById("selected-date").textContent = selectedDate /*+ "일"*/;
         document.getElementById("popup").style.display = "flex";
         return;
     }
@@ -139,7 +139,7 @@ calendarDates.addEventListener("click", async (e) => {
             }
 
             const view = await popupViewApi.json();
-            document.getElementById("selected-date").textContent = selectedDate + "일";
+            document.getElementById("selected-date").textContent = selectedDate /*+ "일"*/;
             document.getElementById("calendar-title").value = view.title;
             document.getElementById("calendar-content").value = view.content;
             document.getElementById("popup").style.display = "flex";

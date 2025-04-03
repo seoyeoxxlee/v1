@@ -55,7 +55,8 @@
     background: white;
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
+    width: 800px;
+    height: 450px;
     position: relative;
 }
 
@@ -69,4 +70,31 @@
 .popupView {
     font-size: 14px;
     font-weight: 500;
+}
+
+#calendar-title,
+#calendar-content {
+    width: 100%;
+    border: none;
+}
+
+#calendar-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 16px 0;
+}
+
+#calendar-content {
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+
+#insert-btn,
+#update-btn,
+#delete-btn {
+    font-size: 16px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    padding: 3px;
+    border-radius: 5px;
 }
