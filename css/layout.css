@@ -273,7 +273,6 @@ main {
 	background: #fff;
 	padding: 20px;
 	border-radius: 6px;
-	overflow-y: auto; /* 내용이 많으면 스크롤 */
 	flex-grow: 1; /* 남는 공간 차지하여 푸터를 아래로 밀어냄 */
 	line-height: 1.6;
 }

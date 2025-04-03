@@ -2,32 +2,57 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin: 10px 0px;
+}
+
+#currentMonth {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.calendar-header #prevBtn, #nextBtn {
+    border: none;
+    background: none;
+    padding: 5px;
 }
 
 .calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    font-weight: bold;
+    font-weight: 500;
     border-bottom: 1px solid #ccc;
     padding-bottom: 5px;
 }
 
 .day {
+    font-size: 14px;
     padding: 5px;
 }
 
 .day:first-child {
     color: red;
 }
+.dark-mode .day:first-child {
+    color: #ff6efa;
+}
 .day:last-child {
     color: blue;
+}
+.dark-mode .day:last-child {
+    color: #00eeff;
 }
 
 .calendar-dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 5px;
+}
+
+#selected-date {
+    color: #1e1d28;
+}
+.dark-mode #selected-date {
+    color: #fff;
 }
 
 .date {
@@ -37,6 +62,10 @@
 
 .date:hover {
     background-color: #f5f5f5;
+}
+
+.dark-mode .date:hover {
+    background-color: #303030;
 }
 
 .popup {
@@ -60,11 +89,19 @@
     position: relative;
 }
 
+.dark-mode .popup-content {
+    background: #1e1d28;
+}
+
 #close-popup {
     position: absolute;
     top: 8px;
     right: 12px;
     cursor: pointer;
+    color: #1e1d28;
+}
+.dark-mode #close-popup {
+    color: #fff;
 }
 
 .popupView {
@@ -84,10 +121,19 @@
     margin: 16px 0;
 }
 
+.dark-mode #calendar-title {
+    background: #1e1d28;
+}
+
 #calendar-content {
     font-size: 18px;
     margin-bottom: 18px;
 }
+
+.dark-mode #calendar-content {
+    background: #1e1d28;
+}
+
 .button-group {
 	display: flex;
 	justify-content: center;
@@ -99,10 +145,17 @@
 #update-btn,
 #delete-btn {
 	display : none;
-	font-size: 16px;
-    background-color: #eee;
+	font-size: 14x;
+    background-color: #fff;
     border: 1px solid #ddd;
-    padding: 3px;
+    padding: 4px;
     border-radius: 5px;
 	cursor: pointer;
+}
+
+.dark-mode #insert-btn,
+#update-btn,
+#delete-btn {
+	background-color: #1e1d28;
+    color: #fff;
 }
