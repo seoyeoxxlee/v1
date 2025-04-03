@@ -1,0 +1,31 @@
+#pageWriteArea{padding: 8px; box-sizing: border-box; margin: 0 100px;}
+#pageTitle{width: 100%; height: 70px; border: 0; font-size: 40px; font-weight: bold; margin-bottom: 20px;}
+#pageTitle::placeholder{color: #ddd;}
+#pageTitle:focus{outline: 0;}
+#pageText{min-height: 500px;}
+.line{font-weight: 300; position: relative; margin: 2px 0;}
+.line .lineSetBtns{display: flex; position: absolute; left: 0; top: 0; transform: translateX(-100%); padding: 0 5px; box-sizing: border-box; border-radius: 3px;}
+.line .lineSetBtns a{border-radius: 5px; width: 26px; height: 28px; background-color: #d1c5aa4a; text-align: center;}
+.line:hover .lineSetBtns{display: flex;}
+.line .text{padding: 3px; border-radius: 5px;}
+.line .text:focus{outline: none;}
+
+/* .line .text{background-color: #ddd;} */
+.line:hover .text{background: #9bcbfc31;}
+.line .subPage{display: inline-block; background: url(/images/page.png) no-repeat left top / 20px 20px; color: #000; border-bottom: 2px dashed #ddd; text-decoration: none; padding: 0 4px 0 20px; letter-spacing: -0.025em; box-sizing: border-box; height: 24px;}
+
+
+/* 플러스아이콘 */
+.material-symbols-outlined {
+    opacity: 0.5;
+    position: relative;
+    top: 2px;
+  color: #000;
+  text-decoration: none;
+  transform: scale(0.8);
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24,
+}
