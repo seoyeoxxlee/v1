@@ -4,52 +4,68 @@ document.addEventListener("DOMContentLoaded",()=>{
     let pageText;
     let lineList;
     let documentBtn = document.querySelectorAll('a[href="/page"]');
-    let receivedData;
+    let receivedData;// 현재 글 쓰그 있는 페이지 id 값
     const main = document.querySelector('main');
+
+    document.addEventListener('click',(e)=>{
+        let textLine = e.target;
+        let linePrev = textLine.parentElement.previousElementSibling;
+    
+        if(textLine.getAttribute('href') == "/page"){
+          console.log("1",e.target)
+          e.preventDefault();
+          e.target.addEventListener("click", router(e));
+          receivedData = e.target.id;
+          routerAfter();
+        }
+    });
+
 
     documentBtn.forEach((document,i)=>{
         document.addEventListener("click", function(e){
             e.preventDefault();
             receivedData = e.currentTarget.id;
-
-            setTimeout(()=>{
-                pageTitle = main.querySelector('#pageTitle');
-                pageText = main.querySelector('#pageText');
-                lineList = main.querySelectorAll('#pageText .line .text');
-
-                // 페이지 시작시 pageTitle에 focus
-                pageTitle.focus();
-                getPage();
-                lineAddEvent();
-
-                // 제목에서 엔터 쳤을때 본문에 텍스트 박스 만들기
-                pageTitle.addEventListener('keyup',(e)=>{
-                    if(e.keyCode == 13){
-                        e.preventDefault();
-                        pageText.prepend(textLineCreate());
-                        // lineInit();
-                        lineList = main.querySelectorAll('#pageText .line .text')
-                        lineList[0].focus();
-                    }else if(e.keyCode == 40){
-                        lineList[0].focus();
-                    }
-                    save();
-                });
-                // 본문 백그라운드 클릭시 라인 추가
-                pageText.addEventListener('click',(e)=>{
-                    if(e.target.id === "pageText"){
-                        e.currentTarget.append(textLineCreate());
-                        // 생성된 마지막 요소에 포커스
-                        main.querySelectorAll('#pageText .line .text')[document.querySelectorAll('#pageText .line .text').length-1].focus();
-                        save();
-                    }
-                });
-
-
-            },100)
-            
+            routerAfter();
         })
     });
+
+    function routerAfter(){
+        setTimeout(()=>{
+            pageTitle = main.querySelector('#pageTitle');
+            pageText = main.querySelector('#pageText');
+            lineList = main.querySelectorAll('#pageText .line .text');
+
+            // 페이지 시작시 pageTitle에 focus
+            pageTitle.focus();
+            getPage();
+            lineAddEvent();
+
+            // 제목에서 엔터 쳤을때 본문에 텍스트 박스 만들기
+            pageTitle.addEventListener('keyup',(e)=>{
+                if(e.keyCode == 13){
+                    e.preventDefault();
+                    pageText.prepend(textLineCreate());
+                    // lineInit();
+                    lineList = main.querySelectorAll('#pageText .line .text')
+                    lineList[0].focus();
+                }else if(e.keyCode == 40){
+                    lineList[0].focus();
+                }
+                save();
+            });
+            // 본문 백그라운드 클릭시 라인 추가
+            pageText.addEventListener('click',(e)=>{
+                if(e.target.id === "pageText"){
+                    e.currentTarget.append(textLineCreate());
+                    // 생성된 마지막 요소에 포커스
+                    main.querySelectorAll('#pageText .line .text')[document.querySelectorAll('#pageText .line .text').length-1].focus();
+                    save();
+                }
+            });
+
+        },100)
+    }
+    
      
     // API에 PUT
     const API = 'https://kdt-api.fe.dev-cos.com/documents';
@@ -121,6 +137,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         .catch((error)=>{
             console.log(error)
         });
+
+        document.getElementById(receivedData).textContent = pageTitle.value;
     }
     
 
@@ -203,7 +221,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
     
 
-    //하위페이지 생성 버튼
+    //하위페이지 이름 바뀌는 기능
     document.addEventListener('click',(e)=>{
         
         let subPageCreateBtn = e.target.parentElement;
@@ -221,9 +239,11 @@ document.addEventListener("DOMContentLoaded",()=>{
             })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json);
                 subPageCreateBtn.parentElement.parentElement.querySelector('.text').append(subPageCreate(json)); 
-                save()
+                save();
+                // 하위 페이지 생성 버튼 누르자 마자 하위페이지로 이동
+                receivedData = json["id"];
+                routerAfter();
             })
 
         }
@@ -231,22 +251,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     function subPageCreate(data){
         const subPageLine = document.createElement('a');
         subPageLine.classList.add('subPage');
-        subPageLine.href = "/pages/page.html?"+data["id"];
+        subPageLine.href = "/page";
         subPageLine.setAttribute("contenteditable",'false');
         subPageLine.id = data["id"];
         subPageLine.textContent = data['title'] ==""?"새페이지":data["title"];
         subPageLine.addEventListener('click',(e)=>{
             e.preventDefault();
-            fetch(API+"/"+e.currentTarget.id,{
-                headers: {
-                    "x-username" : "team7_pages"
-                },
-                })
-                .then((response) => response.json())
-                .then((json) =>{
-                    // setContents(json)
-                    location.href = 'page.html?'+json["id"]+'?';
-                })
         });
        
         return subPageLine;

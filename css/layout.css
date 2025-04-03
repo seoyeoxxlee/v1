@@ -1,327 +1,339 @@
 .noto-sans-kr {
-    font-family: "Noto Sans KR", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
+	font-family: "Noto Sans KR", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+}
+
 .oooh-baby-regular {
-    font-family: "Oooh Baby", cursive;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
+	font-family: "Oooh Baby", cursive;
+	font-weight: 400;
+	font-style: normal;
+}
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-    font-family: Noto Sans KR, sans-serif;
-    display: flex;
+	font-family: Noto Sans KR, sans-serif;
+	display: flex;
 }
 
-html, body {
-    overflow: hidden;
-    height: 100%;
+html,
+body {
+	overflow: hidden;
+	height: 100%;
 }
 
 #logo_name {
-    margin: 0px 20px;
-    font-size: 1.5rem;
+	margin: 0px 20px;
+	font-size: 1.5rem;
 }
 
 #logo_name a {
-    text-decoration: none;
-    color: inherit;
-    display: inline-block; 
+	text-decoration: none;
+	color: inherit;
+	display: inline-block;
 }
-
-
 
 /* 기본적으로 사이드바 보이게 설정 */
 .sidebar {
-    width: 200px;
-    height: 100vh;
-    background: #313042;
-    color: #fff;
-    margin: 10px 0px;
-    padding: 20px;
-    border-radius: 0px 6px 6px 0px;
-    position: fixed;
-    left: 0;
-    top: 50px;
-    height: calc(100vh - 55px - 60px); /* 헤더(45+10px) + 푸터(50+10px) */
-    overflow-y: auto;
-    transition: transform 0.3s ease-in-out;
+	width: 200px;
+	height: 100vh;
+	background: #313042;
+	color: #fff;
+	margin: 10px 0px;
+	padding: 20px;
+	border-radius: 0px 6px 6px 0px;
+	position: fixed;
+	left: 0;
+	top: 50px;
+	height: calc(100vh - 55px - 60px); /* 헤더(45+10px) + 푸터(50+10px) */
+	overflow-y: auto;
+	transition: transform 0.3s ease-in-out;
 }
 
 .sidebar ul {
-    list-style: none;
+	list-style: none;
 }
 
 .sidebar ul li {
-    margin: 10px 0;
+	margin: 10px 0;
 }
 
 .sidebar ul li a {
-    color: #fff;
-    text-decoration: none;
+	color: #fff;
+	text-decoration: none;
 }
 
 .gnb_document {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 #pageCreateButton {
-    color: #fff;
-    font-size: 16px;
-    width: 20px;
-    height: 20px;
-    padding: 2px;
-    background: #313042;
-    border: none;
+	color: #fff;
+	font-size: 16px;
+	width: 20px;
+	height: 20px;
+	padding: 2px;
+	background: #313042;
+	border: none;
 }
 
 #notionList li {
-    margin: 5px 0 5px 10px;
-    font-size: 12px;
+	margin: 5px 0 5px 10px;
+	font-size: 12px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+#notionList li a[href="/page"] {
+	display: block;
+	width: calc(100% - 40px);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+#notionList .deletePage {
+	width: 20px;
+	text-indent: -9999px;
+	background: url(/images/trashcan.png) no-repeat center center / auto 18px;
+}
+#notionList ul {
+	margin: 5px 0 5px 10px;
+	font-size: 12px;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .gnb_darkMode {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	justify-content: space-between;
 }
 
 .switch-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 #switch {
-  position: fixed;
-  margin-bottom: 0;
-  /* hidden */
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+	position: fixed;
+	margin-bottom: 0;
+	/* hidden */
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
 }
 .switch_label {
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-    width: 45px;
-    height: 22px;
-    background: #fff;
-    border: 2px solid #daa;
-    border-radius: 20px;
-    transition: 0.2s;
-  }
-  .switch_label:hover {
-    background: #313042;
-  }
-  .onf_btn {
-    position: absolute;
-    top: 2.8px;
-    left: 4px;
-    display: inline-block;
-    width: 13px;
-    height: 13px;
-    border-radius: 20px;
-    background: #daa;
-    transition: 0.2s;
-  }
-  /* checking style */
-#switch:checked+.switch_label {
-    background: #313042;
-    border: 2px solid #fff;
-  }
-/* 호버 */
-#switch:checked+.switch_label:hover {
-    background: #efefef;
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
+	width: 45px;
+	height: 22px;
+	background: #fff;
+	border: 2px solid #daa;
+	border-radius: 20px;
+	transition: 0.2s;
 }
-  
+.switch_label:hover {
+	background: #313042;
+}
+.onf_btn {
+	position: absolute;
+	top: 2.8px;
+	left: 4px;
+	display: inline-block;
+	width: 13px;
+	height: 13px;
+	border-radius: 20px;
+	background: #daa;
+	transition: 0.2s;
+}
+/* checking style */
+#switch:checked + .switch_label {
+	background: #313042;
+	border: 2px solid #fff;
+}
+/* 호버 */
+#switch:checked + .switch_label:hover {
+	background: #efefef;
+}
+
 /* 꺼졌을 때 */
-#switch:checked+.switch_label .onf_btn {
-    left: 24px;
-    background: #fff;
-    box-shadow: 1px 2px 3px #00000020;
+#switch:checked + .switch_label .onf_btn {
+	left: 24px;
+	background: #fff;
+	box-shadow: 1px 2px 3px #00000020;
 }
 .dark-mode {
-    background:#1e1d28;
-    color: #fff;
+	background: #1e1d28;
+	color: #fff;
+}
+
+.dark-mode #pageTitle {
+	background: #1e1d28;
+	color: #fff;
+}
+
+.dark-mode .line .subPage {
+	color: #fff;
 }
 
 /* 사이드바 숨김 */
 .sidebar.hidden {
-    transform: translateX(-100%);
+	transform: translateX(-100%);
 }
 
 .sideMenu_documents {
-    margin-top: 20px;
+	margin-top: 20px;
 }
-
 
 .sideMenu_settings {
-    margin-top: 50px;
+	margin-top: 50px;
 }
-
 
 /* 햄버거 버튼 스타일 */
 .menu-toggle {
-    font-size: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    position: relative;
-    z-index: 101;
+	font-size: 24px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 5px 10px;
+	position: relative;
+	z-index: 101;
 }
 
-
-
-
-
 .container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    height: 100vh;
-    border-radius: 6px;
-    background: #e8e8e8;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	height: 100vh;
+	border-radius: 6px;
+	background: #e8e8e8;
 }
 
 header {
-    position: fixed;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    border-radius: 6px;
-    padding: 10px 0px;
-    height: 45px;
-    z-index: 100;
+	position: fixed;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	border-radius: 6px;
+	padding: 10px 0px;
+	height: 45px;
+	z-index: 100;
 }
 
-
 .left_menu {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fff;
-    width: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: #fff;
+	width: 200px;
 }
 
 .right_menu {
-    display: flex;
-    background: #fff;
-    margin: 0px 20px;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	background: #fff;
+	margin: 0px 20px;
+	flex-grow: 1;
+	align-items: center;
+	justify-content: space-between;
 }
-
-
-
-
 
 /* 메인 컨텐츠 */
 main {
-    position: fixed;
-    margin-top: 50px;
-    margin-left: 200px;
-    padding: 20px;
-    width: calc(100% - 200px); /* 사이드바 제외한 나머지 공간 */
-    height: calc(100% - 115px); /* 헤더 + 푸터 + 마진 제외한 나머지 공간 */
-    transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
-    background: #fff;
-    border-radius: 6px;
+	position: fixed;
+	margin-top: 50px;
+	margin-left: 200px;
+	padding: 20px;
+	width: calc(100% - 200px); /* 사이드바 제외한 나머지 공간 */
+	height: calc(100% - 115px); /* 헤더 + 푸터 + 마진 제외한 나머지 공간 */
+	transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+	background: #fff;
+	border-radius: 6px;
 
-    display: flex;
-    flex-direction: column; /* 내부 요소를 세로로 정렬 */
+	display: flex;
+	flex-direction: column; /* 내부 요소를 세로로 정렬 */
 }
 
 .content {
-    background: #727184;
-    padding: 20px;
-    border-radius: 6px;
-    overflow-y: auto; /* 내용이 많으면 스크롤 */
-    flex-grow: 1; /* 남는 공간 차지하여 푸터를 아래로 밀어냄 */
+	background: #727184;
+	padding: 20px;
+	border-radius: 6px;
+	overflow-y: auto; /* 내용이 많으면 스크롤 */
+	flex-grow: 1; /* 남는 공간 차지하여 푸터를 아래로 밀어냄 */
 }
 
 .dynamic-content {
-    background: rgb(201, 53, 68);
-    border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 20px;
+	background: rgb(201, 53, 68);
+	border-radius: 6px;
+	padding: 10px;
+	margin-bottom: 20px;
 }
 
 /* 사이드바 숨김 시, 메인 영역 확장 */
 .sidebar.hidden + main {
-    margin-left: 0;
-    width: 100%;
+	margin-left: 0;
+	width: 100%;
 }
-
 
 /* content */
-[contenteditable="true"]:empty::before{
-    content:attr(placeholder);
-    color:#999;
+[contenteditable="true"]:empty::before {
+	content: attr(placeholder);
+	color: #999;
 }
-div[contenteditable=true]{
-    border: 1px dashed #aaa;
-    padding:5px
+div[contenteditable="true"] {
+	border: 1px dashed #aaa;
+	padding: 5px;
 }
-
 
 /* 푸터 스타일 */
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #fff;
-    padding: 10px;
-    min-height: 50px; /* 최소 높이 설정 (너무 작아지는 것 방지) */
-    border-top-left-radius: 6px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #fff;
+	padding: 10px;
+	min-height: 50px; /* 최소 높이 설정 (너무 작아지는 것 방지) */
+	border-top-left-radius: 6px;
 }
 
 .modal {
-    display: none; /* 기본적으로 숨김 */
-    position: fixed;
-    z-index: 1000;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+	display: none; /* 기본적으로 숨김 */
+	position: fixed;
+	z-index: 1000;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 300px;
+	background: white;
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	padding: 20px;
 }
 
 .modal-content {
-    position: relative;
-    left:50px;
+	position: relative;
+	left: 50px;
 }
 
 .close {
-    position: absolute;
-    top: 10px;
-    right: 50px;
-    cursor: pointer;
+	position: absolute;
+	top: 10px;
+	right: 50px;
+	cursor: pointer;
 }
-
-
-
