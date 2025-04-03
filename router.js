@@ -35,16 +35,6 @@ async function handleLocation() {
       document.querySelector("main").innerHTML = `
           <div class="content">
                 <h2>#Content</h2>
-                <div>
-                    <button type="button" id="pageSaveButton">저장</button>
-                    <button type="button" id="historyBakButton">↩</button>
-                    <button type="button" id="historyForwardButton">↪</button>
-                    <div>
-                        pageID:<span id="pageId"></span>
-                    </div>
-                    <div id="contentTitle" contenteditable="true" placeholder="새페이지 제목"></div>
-                    <div id="contentBody" contenteditable="true" placeholder="새페이지 내용"></div>
-                </div>
             </div>
       `;
       return;

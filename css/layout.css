@@ -287,15 +287,6 @@ main {
 	width: 100%;
 }
 
-/* content */
-[contenteditable="true"]:empty::before {
-	content: attr(placeholder);
-	color: #999;
-}
-div[contenteditable="true"] {
-	border: 1px dashed #aaa;
-	padding: 5px;
-}
 
 /* 푸터 스타일 */
 footer {

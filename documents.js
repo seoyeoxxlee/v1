@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded",()=>{
              //제목이 있는경우 제목으로표현
              a.textContent= data['title'] ==""?"새페이지":data["title"];
              li.appendChild(a);
+             
 
              //  삭제기능
              const deletePage = (data) => {
@@ -69,7 +70,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             li.append(deleteBtn);
             notionList.appendChild(li);
             
-           };
+        };
 
         // 페이지 목록 생성
         const getPageTitleList=()=>{
@@ -87,7 +88,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         }
                     )
                     //목록중 첫번째 페이지 내용을 보여줌
-                    // setContents(json[0])
+                    // setContents(json[0]);
               })
         }
         getPageTitleList();
@@ -141,74 +142,74 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
 
         //제목 엔터키 막음
-        contentTitle.addEventListener('keydown',(event)=>{
-           // console.log(event)
-           if(event.keyCode == 13){
-            event.preventDefault();
-           }
-        })
+        // contentTitle.addEventListener('keydown',(event)=>{
+        //    // console.log(event)
+        //    if(event.keyCode == 13){
+        //     event.preventDefault();
+        //    }
+        // })
 
         //저장
-        const pageSaveButton= document.getElementById('pageSaveButton');
-            pageSaveButton.addEventListener('click',(event)=>{
+        // const pageSaveButton= document.getElementById('pageSaveButton');
+            // pageSaveButton.addEventListener('click',(event)=>{
 
-                if(confirm('저장하시겠습니까?')){
-                    fetch('http://localhost:3000/posts/'+ pageId.textContent, {
-                            method: 'PUT',
-                            body: JSON.stringify({
+            //     if(confirm('저장하시겠습니까?')){
+            //         fetch('http://localhost:3000/posts/'+ pageId.textContent, {
+            //                 method: 'PUT',
+            //                 body: JSON.stringify({
                                
-                                title: contentTitle.innerHTML,
-                                body: contentBody.innerHTML,
+            //                     title: contentTitle.innerHTML,
+            //                     body: contentBody.innerHTML,
                                
-                            }),
-                            headers: {
-                                'Content-type': 'application/json; charset=UTF-8',
-                            },
-                            })
-                            .then((response) => response.json())
-                            .then((json) =>{
-                                notionList.querySelector("a[id='"+pageId.textContent+"']").textContent= contentTitle.innerHTML;
-                                alert('저장되었습니다')
-                            })
-                    }
-                })
+            //                 }),
+            //                 headers: {
+            //                     'Content-type': 'application/json; charset=UTF-8',
+            //                 },
+            //                 })
+            //                 .then((response) => response.json())
+            //                 .then((json) =>{
+            //                     notionList.querySelector("a[id='"+pageId.textContent+"']").textContent= contentTitle.innerHTML;
+            //                     alert('저장되었습니다')
+            //                 })
+            //         }
+            //     })
 
 
                 //내용에서 엔터키를 누를때마다 히스토리에 저장  LIFO : last in first out
-                const history = {
-                    'back':[],
-                    'forward':[]
-                }
-                contentBody.addEventListener('keydown',(event)=>{
-                    if(event.keyCode == 13){
-                        //엔터키를 누를때 forward가 남았으면 클리어 
-                         if(history.forward.length > 0){
-                            history.forward=[]
-                         }
+                // const history = {
+                //     'back':[],
+                //     'forward':[]
+                // }
+                // contentBody.addEventListener('keydown',(event)=>{
+                //     if(event.keyCode == 13){
+                //         //엔터키를 누를때 forward가 남았으면 클리어 
+                //          if(history.forward.length > 0){
+                //             history.forward=[]
+                //          }
                          
-                        history.back.push(event.currentTarget.innerHTML);
-                       // console.log(history)
-                    }
-                })
+                //         history.back.push(event.currentTarget.innerHTML);
+                //        // console.log(history)
+                //     }
+                // })
 
-                const historyBakButton = document.getElementById('historyBakButton');
-                historyBakButton.addEventListener('click',(event)=>{
-                    if(history.back.length == 0){
-                        return;
-                    }
-                    history.forward.push(contentBody.innerHTML);
-                    contentBody.innerHTML= history.back.pop();
-                    //console.log(history)
-                })
+                // const historyBakButton = document.getElementById('historyBakButton');
+                // historyBakButton.addEventListener('click',(event)=>{
+                //     if(history.back.length == 0){
+                //         return;
+                //     }
+                //     history.forward.push(contentBody.innerHTML);
+                //     contentBody.innerHTML= history.back.pop();
+                //     //console.log(history)
+                // })
 
-                const historyForwardButton = document.getElementById('historyForwardButton');
-                historyForwardButton.addEventListener('click',(event) =>{
-                    if(history.forward.length == 0){
-                        return;
-                    }
-                    history.back.push(contentBody.innerHTML);
-                    contentBody.innerHTML= history.forward.pop();
-                })
+                // const historyForwardButton = document.getElementById('historyForwardButton');
+                // historyForwardButton.addEventListener('click',(event) =>{
+                //     if(history.forward.length == 0){
+                //         return;
+                //     }
+                //     history.back.push(contentBody.innerHTML);
+                //     contentBody.innerHTML= history.forward.pop();
+                // })
 
 
 //검색 기능
