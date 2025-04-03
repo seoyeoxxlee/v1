@@ -23,11 +23,6 @@ body {
     display: flex;
 }
 
-body.dark-mode {
-    background-color: black;
-    color: white;
-}
-
 html, body {
     overflow: hidden;
     height: 100%;
@@ -99,14 +94,68 @@ html, body {
 
 .gnb_darkMode {
     display: flex;
+    justify-content: center;
     align-items: center;
     justify-content: space-between;
 }
 
-#darkModeButton {
+.switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#switch {
+  position: fixed;
+  margin-bottom: 0;
+  /* hidden */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.switch_label {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    width: 45px;
+    height: 22px;
+    background: #fff;
+    border: 2px solid #daa;
+    border-radius: 20px;
+    transition: 0.2s;
+  }
+  .switch_label:hover {
+    background: #313042;
+  }
+  .onf_btn {
+    position: absolute;
+    top: 2.8px;
+    left: 4px;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 20px;
+    background: #daa;
+    transition: 0.2s;
+  }
+  /* checking style */
+#switch:checked+.switch_label {
+    background: #313042;
+    border: 2px solid #fff;
+  }
+/* 호버 */
+#switch:checked+.switch_label:hover {
+    background: #efefef;
+}
+  
+/* 꺼졌을 때 */
+#switch:checked+.switch_label .onf_btn {
+    left: 24px;
+    background: #fff;
+    box-shadow: 1px 2px 3px #00000020;
+}
+.dark-mode {
+    background:#1e1d28;
     color: #fff;
-    border: none;
-    background-color: #a52a2a;
 }
 
 /* 사이드바 숨김 */
@@ -201,7 +250,7 @@ main {
 }
 
 .content {
-    background: #e0f6ff;
+    background: #727184;
     padding: 20px;
     border-radius: 6px;
     overflow-y: auto; /* 내용이 많으면 스크롤 */
@@ -209,7 +258,7 @@ main {
 }
 
 .dynamic-content {
-    background: rgb(255, 196, 202);
+    background: rgb(201, 53, 68);
     border-radius: 6px;
     padding: 10px;
     margin-bottom: 20px;
