@@ -12,7 +12,7 @@ const routes = {
   "/account": "./pages/account.html",
 
   "/trashcan": "./pages/trashcan.html",
- 
+
   "/page" : "./pages/page.html"
 
 };
@@ -30,22 +30,14 @@ function router(event) {
 // 경로에 따라 페이지 변경
 async function handleLocation() {
   const pathname = window.location.pathname;
+  
   if (pathname === "/" || pathname === "/index.html") {
       // 처음 로드된 화면으로 되돌리기
       document.querySelector("main").innerHTML = `
           <div class="content">
-                <h2>#Content</h2>
-                <div>
-                    <button type="button" id="pageSaveButton">저장</button>
-                    <button type="button" id="historyBakButton">↩</button>
-                    <button type="button" id="historyForwardButton">↪</button>
-                    <div>
-                        pageID:<span id="pageId"></span>
-                    </div>
-                    <div id="contentTitle" contenteditable="true" placeholder="새페이지 제목"></div>
-                    <div id="contentBody" contenteditable="true" placeholder="새페이지 내용"></div>
-                </div>
-            </div>
+            <h2>안녕하세요.</br></h2>
+            <h2>7팀의 <span class="oooh-baby-regular"> Noteflow</span> 입니다.</h2>
+          </div>
 
             <div class="calendar">
                 <h3>달력</h3>
@@ -79,11 +71,10 @@ async function handleLocation() {
                     <button id="delete-btn">삭제</button>
                 </div>
             </div>
-         `;
+      `;
 
-        CalendarEventsBind();
-            
-  
+      CalendarEventsBind();
+
       return;
   }
 
@@ -106,5 +97,3 @@ window.addEventListener("DOMContentLoaded", () => {
       el.addEventListener("click", router);
   });
 });
-
-
