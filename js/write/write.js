@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     let pageText;
     let lineList;
     let documentBtn = document.querySelectorAll('a[href="/page"]');
-    let receivedData;
+    let receivedData;// 현재 글 쓰그 있는 페이지 id 값
     const main = document.querySelector('main');
 
     document.addEventListener('click',(e)=>{
@@ -63,9 +63,9 @@ document.addEventListener("DOMContentLoaded",()=>{
                 }
             });
 
-
         },100)
     }
+    
      
     // API에 PUT
     const API = 'https://kdt-api.fe.dev-cos.com/documents';
@@ -137,6 +137,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         .catch((error)=>{
             console.log(error)
         });
+
+        document.getElementById(receivedData).textContent = pageTitle.value;
     }
     
 
@@ -241,7 +243,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 save();
                 // 하위 페이지 생성 버튼 누르자 마자 하위페이지로 이동
                 receivedData = json["id"];
-                routerAfter(); 
+                routerAfter();
             })
 
         }
