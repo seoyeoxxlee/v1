@@ -69,3 +69,9 @@ window.addEventListener("DOMContentLoaded", () => {
       el.addEventListener("click", router);
   });
 });
+
+a.href = "#"; // 페이지 이동 방지
+a.addEventListener("click", (event) => {
+  event.preventDefault(); // 기본 링크 이동 방지
+  setContents(data); // 선택한 페이지의 내용 불러오기
+});

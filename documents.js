@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     const pageCreateButton = document.getElementById('pageCreateButton');
     pageCreateButton.addEventListener('click',(event)=>{
         const pageCreateButton = document.getElementById('pageCreateButton');
-        pageCreateButton.addEventListener('click',(event)=>{
             fetch(API, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -18,7 +17,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             })
             .then((response) => response.json())
             .then((json) => makePageTitle(json))
-        })
+        
     });
 
 //페이지 만들기
@@ -28,12 +27,18 @@ document.addEventListener("DOMContentLoaded",()=>{
              const a = document.createElement('a');
              const sub = data["documents"];
             
-             a.href ='/page';
+             a.href ="#";
              //고유 아이디로 링크아이디 설정
              a.id = data["id"];
              //페이지의 제목이 빈 문자열인경우 새페이지로 표현
              //제목이 있는경우 제목으로표현
              a.textContent= data['title'] ==""?"새페이지":data["title"];
+             
+             a.addEventListener("click", (event) => {
+                event.preventDefault(); // 기본 링크 이동 막기
+                setContents(data); // 선택한 페이지 내용 불러오기
+              });
+
              li.appendChild(a);
 
              //  삭제기능
