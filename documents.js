@@ -37,17 +37,42 @@ document.addEventListener("DOMContentLoaded",()=>{
              li.appendChild(a);
 
              //  삭제기능
-             const deleteBtn = document.createElement('a');
-             deleteBtn.textContent = "삭제"
-             deleteBtn.href = "#";
-             deleteBtn.addEventListener('click',(e)=>{e.preventDefault(); deletePage(data); e.target.parentElement.remove();})
-             li.append(deleteBtn);
-             notionList.appendChild(li)
-             if(sub.length != 0){
-                sub.forEach((subData)=>{
-                    makePageTitle(subData)
+             const deletePage = (data) => {
+                const API = 'https://kdt-api.fe.dev-cos.com/documents/{documentId}'; // 삭제할 문서의 API 경로
+            
+                fetch(API, {
+                    method: 'DELETE',
+                    headers: {
+                        "x-username": "team7_pages"
+                    }
                 })
-             }
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("삭제 실패!");
+                    }
+                    console.log(`페이지 ${data.id} 삭제 완료`);
+                })
+                .catch((error) => {
+                    console.error("삭제 중 오류 발생:", error);
+                });
+            };
+            
+            const deleteBtn = document.createElement('a');
+            deleteBtn.textContent = "삭제";
+            deleteBtn.href = "#";
+            
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+            
+                if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
+                    deletePage(data); // API에서 삭제 요청
+                    e.target.parentElement.remove(); // 화면에서 제거
+                }
+            });
+            
+            li.append(deleteBtn);
+            notionList.appendChild(li);
+            
            };
 
         // 페이지 목록 생성
