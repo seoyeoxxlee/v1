@@ -6,10 +6,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     menuToggle.addEventListener("click", () => {
         sidebar.classList.toggle("hidden");
-
+        
         // 버튼 모양 변경 (☰ → «)
-        menuToggle.textContent = sidebar.classList.contains("hidden") ? "☰" : "«";
+        if (sidebar.classList.contains("hidden")) {
+            menuToggle.textContent = "☰";
+        } else {
+            menuToggle.textContent = "«";
+        }
     });
 
     
 });
+

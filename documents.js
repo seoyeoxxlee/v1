@@ -64,36 +64,32 @@ document.addEventListener("DOMContentLoaded",()=>{
         const contentTitle = document.getElementById("contentTitle");
         const contentBody = document.getElementById("contentBody");
 
-        //상단바에 현재 페이지명 뜨게
-        const tabTitle = document.getElementById("tabTitle");
+        
 
         const setContents =(data) =>{
             pageId.textContent =data['id'];
             contentTitle.innerHTML=data['title'];
             contentBody.innerHTML=data['body']
 
-            document.addEventListener("DOMContentLoaded", () => {
-                document.querySelectorAll("#notionList a").forEach((pageLink) => {
-                    pageLink.addEventListener("click", (event) => {
-                        event.preventDefault(); // 기본 동작 방지
-                        updateTabTitle(event.target);
-                    });
-                });
-            });
+            //상단바에 현재 페이지명 뜨게
+            const tabTitle = document.getElementById("tabTitle");
+
             
-            function updateTabTitle(clickedElement) {
-                let pageTitle = clickedElement.textContent.trim(); // 클릭한 페이지 제목 가져오기
-                let fullPath = pageTitle; // 기본적으로 선택된 페이지 제목
             
-                // 하위 페이지 구조 찾기 (부모 요소 탐색)
-                let parent = clickedElement.closest("ul").previousElementSibling;
-                while (parent && parent.tagName === "A") {
-                    fullPath = parent.textContent.trim() + " > " + fullPath; // 부모 제목 추가
-                    parent = parent.closest("ul").previousElementSibling;
-                }
-            
-                tabTitle.textContent = fullPath === "" ? "새페이지" : fullPath; // 제목 업데이트
+            // 계층 구조를 대비한 경로 생성 함수
+            function getFullPath(page) {
+              let path = [];
+              
+              // 하위 페이지가 없더라도, 향후 parent가 추가될 가능성을 고려
+              while (page) {
+                path.unshift(page.title || "새페이지");
+                page = page.parent || null;  // parent가 없으면 종료
+              }
+              
+              return path.join(" > ");
             }
+            
+            tabTitle.textContent = getFullPath(data);
             
 
             //컨텐츠가 변경이되면 기존  history 클리어
@@ -152,23 +148,23 @@ document.addEventListener("DOMContentLoaded",()=>{
                     }
                 })
 
-                // const historyBakButton = document.getElementById('historyBakButton');
-                // historyBakButton.addEventListener('click',(event)=>{
-                //     if(history.back.length == 0){
-                //         return;
-                //     }
-                //     history.forward.push(contentBody.innerHTML);
-                //     contentBody.innerHTML= history.back.pop();
-                //     //console.log(history)
-                // })
+                const historyBakButton = document.getElementById('historyBakButton');
+                historyBakButton.addEventListener('click',(event)=>{
+                    if(history.back.length == 0){
+                        return;
+                    }
+                    history.forward.push(contentBody.innerHTML);
+                    contentBody.innerHTML= history.back.pop();
+                    //console.log(history)
+                })
 
-                // const historyForwardButton = document.getElementById('historyForwardButton');
-                // historyForwardButton.addEventListener('click',(event) =>{
-                //     if(history.forward.length == 0){
-                //         return;
-                //     }
-                //     history.back.push(contentBody.innerHTML);
-                //     contentBody.innerHTML= history.forward.pop();
-                // })
+                const historyForwardButton = document.getElementById('historyForwardButton');
+                historyForwardButton.addEventListener('click',(event) =>{
+                    if(history.forward.length == 0){
+                        return;
+                    }
+                    history.back.push(contentBody.innerHTML);
+                    contentBody.innerHTML= history.forward.pop();
+                })
         
 })
