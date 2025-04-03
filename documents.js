@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded",()=>{
         })
     });
 
-//페이지 만들기
-            const notionList = document.getElementById('notionList');
-            const makePageTitle = (data) =>{
+        //페이지 만들기
+        const notionList = document.getElementById('notionList');
+        const makePageTitle = (data) =>{
              const li = document.createElement('li');
              const a = document.createElement('a');
              const sub = data["documents"];
@@ -39,16 +39,22 @@ document.addEventListener("DOMContentLoaded",()=>{
              //  삭제기능
              const deleteBtn = document.createElement('a');
              deleteBtn.textContent = "삭제"
+             deleteBtn.classList.add("deletePage")
              deleteBtn.href = "#";
              deleteBtn.addEventListener('click',(e)=>{e.preventDefault(); deletePage(data); e.target.parentElement.remove();})
              li.append(deleteBtn);
-             notionList.appendChild(li)
+             notionList.appendChild(li);
              if(sub.length != 0){
-                sub.forEach((subData)=>{
+                sub.forEach((subData,i)=>{
+                    
                     makePageTitle(subData)
-                })
+                });
              }
-           };
+            
+           
+             
+             
+        };
 
         // 페이지 목록 생성
         const getPageTitleList=()=>{
@@ -70,6 +76,17 @@ document.addEventListener("DOMContentLoaded",()=>{
               })
         }
         getPageTitleList();
+
+        // 삭제버튼
+        function deletePage(data){
+            fetch(API+"/"+data["id"], {
+                method: 'DELETE',
+                headers: {
+                    "x-username" : "team7_pages"
+                },
+            })
+        }
+
 
         //목록에서 페이지를 선택 했을때 내용 불러오기
         const pageId = document.getElementById('pageId');

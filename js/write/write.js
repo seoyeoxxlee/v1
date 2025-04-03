@@ -7,49 +7,65 @@ document.addEventListener("DOMContentLoaded",()=>{
     let receivedData;
     const main = document.querySelector('main');
 
+    document.addEventListener('click',(e)=>{
+        let textLine = e.target;
+        let linePrev = textLine.parentElement.previousElementSibling;
+    
+        if(textLine.getAttribute('href') == "/page"){
+          console.log(e.target)
+          e.preventDefault();
+          e.target.addEventListener("click", router(e));
+          receivedData = e.target.id;
+          routerAfter();
+        }
+    });
+
+
     documentBtn.forEach((document,i)=>{
         document.addEventListener("click", function(e){
             e.preventDefault();
             receivedData = e.currentTarget.id;
-
-            setTimeout(()=>{
-                pageTitle = main.querySelector('#pageTitle');
-                pageText = main.querySelector('#pageText');
-                lineList = main.querySelectorAll('#pageText .line .text');
-
-                // 페이지 시작시 pageTitle에 focus
-                pageTitle.focus();
-                getPage();
-                lineAddEvent();
-
-                // 제목에서 엔터 쳤을때 본문에 텍스트 박스 만들기
-                pageTitle.addEventListener('keyup',(e)=>{
-                    if(e.keyCode == 13){
-                        e.preventDefault();
-                        pageText.prepend(textLineCreate());
-                        // lineInit();
-                        lineList = main.querySelectorAll('#pageText .line .text')
-                        lineList[0].focus();
-                    }else if(e.keyCode == 40){
-                        lineList[0].focus();
-                    }
-                    save();
-                });
-                // 본문 백그라운드 클릭시 라인 추가
-                pageText.addEventListener('click',(e)=>{
-                    if(e.target.id === "pageText"){
-                        e.currentTarget.append(textLineCreate());
-                        // 생성된 마지막 요소에 포커스
-                        main.querySelectorAll('#pageText .line .text')[document.querySelectorAll('#pageText .line .text').length-1].focus();
-                        save();
-                    }
-                });
-
-
-            },100)
-            
+            routerAfter();
         })
     });
+
+    function routerAfter(){
+        setTimeout(()=>{
+            pageTitle = main.querySelector('#pageTitle');
+            pageText = main.querySelector('#pageText');
+            lineList = main.querySelectorAll('#pageText .line .text');
+
+            // 페이지 시작시 pageTitle에 focus
+            pageTitle.focus();
+            getPage();
+            lineAddEvent();
+
+            // 제목에서 엔터 쳤을때 본문에 텍스트 박스 만들기
+            pageTitle.addEventListener('keyup',(e)=>{
+                if(e.keyCode == 13){
+                    e.preventDefault();
+                    pageText.prepend(textLineCreate());
+                    // lineInit();
+                    lineList = main.querySelectorAll('#pageText .line .text')
+                    lineList[0].focus();
+                }else if(e.keyCode == 40){
+                    lineList[0].focus();
+                }
+                save();
+            });
+            // 본문 백그라운드 클릭시 라인 추가
+            pageText.addEventListener('click',(e)=>{
+                if(e.target.id === "pageText"){
+                    e.currentTarget.append(textLineCreate());
+                    // 생성된 마지막 요소에 포커스
+                    main.querySelectorAll('#pageText .line .text')[document.querySelectorAll('#pageText .line .text').length-1].focus();
+                    save();
+                }
+            });
+
+
+        },100)
+    }
      
     // API에 PUT
     const API = 'https://kdt-api.fe.dev-cos.com/documents';

@@ -90,6 +90,21 @@ html, body {
 #notionList li {
     margin: 5px 0 5px 10px;
     font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+#notionList li a[href="/page"]{display: block; width: calc(100% - 40px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+#notionList .deletePage{
+    width: 20px;
+    text-indent: -9999px;
+    background: url(/images/trashcan.png) no-repeat center center / auto 18px;
+}
+#notionList ul{
+    margin: 5px 0 5px 10px;
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .gnb_darkMode {
