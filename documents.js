@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     e.preventDefault();
                     if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
                         deletePage(menu[i]); // API에서 삭제 요청
-                        e.target.parentElement.remove(); // 화면에서 제거
+                        getPageTitleList();
                     }
                 });
                 // 새로운 list 만들 ul
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded",()=>{
              a.id = data["id"];
              //페이지의 제목이 빈 문자열인경우 새페이지로 표현
              //제목이 있는경우 제목으로표현
-             a.textContent= data['title'] ==""?"새페이지":data["title"];
+             a.textContent = data['title']==""?"새페이지":data["title"];
              li.appendChild(a);
              
             const deleteBtn = document.createElement('a');
@@ -83,7 +83,6 @@ document.addEventListener("DOMContentLoaded",()=>{
             
                 if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
                     deletePage(data); // API에서 삭제 요청
-                    e.target.parentElement.remove(); // 화면에서 제거
                 }
             });
             
@@ -103,6 +102,7 @@ document.addEventListener("DOMContentLoaded",()=>{
               .then((response) => response.json())
              // .then((json) => console.log(json));
               .then((json) => {
+                   notionList.innerHTML="";
                    createTreeView(json, root);
               })
         }
@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         throw new Error("삭제 실패!");
                     }
                     console.log(`페이지 ${data.id} 삭제 완료`);
+                    getPageTitleList();//데이터 삭제후 트리형식 다시그리기 (상위 패이지가 사라지면 하위가 위로 올라오기 때문에)
                 })
                 .catch((error) => {
                     console.error("삭제 중 오류 발생:", error);
