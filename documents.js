@@ -16,9 +16,64 @@ document.addEventListener("DOMContentLoaded",()=>{
             })
             .then((response) => response.json())
             .then((json) => makePageTitle(json))
-        })
+        });
 
-    //페이지 만들기
+        // 문서 트리형식
+        function treeList(data){    
+            const deleteBtn = document.createElement('a');
+            deleteBtn.textContent = "삭제";
+            deleteBtn.href = "#";
+            deleteBtn.classList.add("deletePage");
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
+                    deletePage(data); // API에서 삭제 요청
+                    e.target.parentElement.remove(); // 화면에서 제거
+                }
+            });
+
+            // 동작 부분
+            const ul = document.createElement('ul');
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            const sub = data["documents"];
+
+            a.href ='/page';
+            a.id = data["id"];
+            a.textContent= data['title'] ==""?"새페이지":data["title"];
+            li.append(a);
+            li.append(deleteBtn);
+
+            if(sub.length != 0){
+                sub.forEach((el)=>{
+                    const li2 = document.createElement('li');
+                    const a2 = document.createElement('a');
+                    const deleteBtn2 = document.createElement('a');
+                    deleteBtn2.textContent = "삭제";
+                    deleteBtn2.href = "#";
+                    deleteBtn2.classList.add("deletePage");
+                    deleteBtn2.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
+                            deletePage(el); // API에서 삭제 요청
+                            e.target.parentElement.remove(); // 화면에서 제거
+                        }
+                    });
+                    
+                    a2.href ='/page';
+                    a2.id = el["id"];
+                    a2.textContent= el['title'] ==""?"새페이지":el["title"];
+                    li2.append(a2);
+                    li2.append(deleteBtn2);
+                    ul.append(li2);
+                });
+                li.append(ul);
+            }
+
+            notionList.append(li);
+        }
+        
+        //페이지 만들기
         const notionList = document.getElementById('notionList');
         const makePageTitle = (data) =>{
              const li = document.createElement('li');
@@ -33,27 +88,6 @@ document.addEventListener("DOMContentLoaded",()=>{
              a.textContent= data['title'] ==""?"새페이지":data["title"];
              li.appendChild(a);
              
-
-             //  삭제기능
-             const deletePage = (data) => {
-                const API = 'https://kdt-api.fe.dev-cos.com/documents/'+ data["id"]; // 삭제할 문서의 API 경로
-                fetch(API, {
-                    method: 'DELETE',
-                    headers: {
-                        "x-username": "team7_pages"
-                    }
-                })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("삭제 실패!");
-                    }
-                    console.log(`페이지 ${data.id} 삭제 완료`);
-                })
-                .catch((error) => {
-                    console.error("삭제 중 오류 발생:", error);
-                });
-            };
-            
             const deleteBtn = document.createElement('a');
             deleteBtn.textContent = "삭제";
             deleteBtn.href = "#";
@@ -69,6 +103,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             
             li.append(deleteBtn);
             notionList.appendChild(li);
+            a.click();
             
         };
 
@@ -84,7 +119,7 @@ document.addEventListener("DOMContentLoaded",()=>{
               .then((json) => {
                     json.forEach(
                         (data) =>{
-                            makePageTitle(data)
+                            treeList(data)
                         }
                     )
                     //목록중 첫번째 페이지 내용을 보여줌
@@ -101,6 +136,15 @@ document.addEventListener("DOMContentLoaded",()=>{
                     "x-username" : "team7_pages"
                 },
             })
+            .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("삭제 실패!");
+                    }
+                    console.log(`페이지 ${data.id} 삭제 완료`);
+                })
+                .catch((error) => {
+                    console.error("삭제 중 오류 발생:", error);
+                });
         }
 
         //목록에서 페이지를 선택 했을때 내용 불러오기

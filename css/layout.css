@@ -93,9 +93,12 @@ body {
 	flex-wrap: wrap;
 	justify-content: space-between;
 }
+#notionList>li{
+	margin-bottom: 15px;
+}
 #notionList li a[href="/page"] {
 	display: block;
-	width: calc(100% - 40px);
+	width: calc(100% - 20px);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -106,11 +109,11 @@ body {
 	background: url(/images/trashcan.png) no-repeat center center / auto 18px;
 }
 #notionList ul {
-	margin: 5px 0 5px 10px;
+	margin: 0px 0 5px 8px;
 	font-size: 12px;
-	display: flex;
-	flex-wrap: wrap;
+	width: 100%;
 }
+#notionList ul li{width: 100%; margin-left: 0;}
 
 .gnb_darkMode {
 	display: flex;
