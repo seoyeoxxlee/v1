@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         save();
                     }
                 });
-
+                getPageTitleList();
             },500)
         }
     }
@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 .then((response) => {
                     if (!response.ok) {
                         throw page.remove();
+                        console.log("사라진페이지")
                     }
                     return response.json()
                 })
@@ -157,7 +158,10 @@ document.addEventListener("DOMContentLoaded",()=>{
                 })
                 .then(()=>{
                     pageText.innerHTML = prePageText.innerHTML;
-                })       
+                })
+                .catch((error)=>{
+                    console.log('Error');
+                })     
             });
         }else{
             pageText.innerHTML = prePageText.innerHTML;   
@@ -281,14 +285,15 @@ document.addEventListener("DOMContentLoaded",()=>{
                     'Content-type': 'application/json; charset=UTF-8',
                     "x-username" : "team7_pages"
                 },
-                })
+            })
             .then((response) => response.json())
             .then((json) => {
+                console.log(json["id"])
                 subPageCreateBtn.parentElement.parentElement.querySelector('.text').append(subPageCreate(json)); 
                 save();
                 // 하위 페이지 생성 버튼 누르자 마자 하위페이지로 이동
                 receivedData = json["id"];
-                // routerAfter();
+                console.log(receivedData)
             })
 
         }
@@ -307,5 +312,56 @@ document.addEventListener("DOMContentLoaded",()=>{
         return subPageLine;
     }
 
+    // 문서 트리형식
+    const root = document.getElementById("notionList");
+    function createTreeView(menu, currentNode) {
+        for (let i = 0; i < menu.length; i++) {
+            let menuitem = document.createElement("li");
+            if (menu[i].documents !== undefined) {
+            // // 각 메뉴에 자식 노드가 있으면 
+            const a = document.createElement("a");
+            a.href="/page"
+            a.id=menu[i].id;
+            a.textContent = menu[i].title;
 
+            const deleteBtn = document.createElement('a');
+            deleteBtn.textContent = "삭제";
+            deleteBtn.href = "#";
+            deleteBtn.classList.add("deletePage");
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
+                    deletePage(menu[i]); // API에서 삭제 요청
+                    getPageTitleList();
+                }
+            });
+            // 새로운 list 만들 ul
+            // 자식노드의 자식노드 list
+            const newul = document.createElement("ul");
+            menuitem.append(a, deleteBtn ,newul); // li에 넣어줌
+            currentNode.append(menuitem);
+
+            createTreeView(menu[i].documents, newul); // 자식 노드가 있으니까 재귀 한번 더돔
+            } else {
+            // 메뉴에 자식 노드가 없으면 -> li 엘리먼트 안에 단순히 이름만 표시
+            menuitem.textContent = menu[i].title;
+            currentNode.append(menuitem);
+            // 자식 노드가 없으므로 재귀 돌릴 필요 없음.
+            }
+        }
+    }
+    // 페이지 목록 생성
+    const getPageTitleList=()=>{
+           fetch(API,{
+                headers: {
+                    "x-username" : "team7_pages"
+                },
+          })
+          .then((response) => response.json())
+         // .then((json) => console.log(json));
+          .then((json) => {
+               notionList.innerHTML="";
+               createTreeView(json, root);
+          })
+    }
 });
