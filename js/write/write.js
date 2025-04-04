@@ -47,9 +47,12 @@ document.addEventListener("DOMContentLoaded",()=>{
           console.log("1",e.target)
           e.preventDefault();
           e.target.addEventListener("click", router(e));
-          receivedData = e.target.id;
+
+        receivedData = e.target.textContent;  // id 대신 a 태그 안의 텍스트 가져오기
+        tabTitle.textContent = receivedData; // tabTitle에 적용
         //   routerAfter();
         }
+
     });
 
     // 뒤로가기가 눌리면

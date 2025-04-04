@@ -158,11 +158,6 @@ document.addEventListener("DOMContentLoaded",()=>{
             pageId.textContent =data['id'];
             contentTitle.innerHTML=data['title'];
             contentBody.innerHTML=data['body']
-
-            //상단바에 현재 페이지명 뜨게
-            const tabTitle = document.getElementById("tabTitle");
-
-            
             
             // 계층 구조를 대비한 경로 생성 함수
             function getFullPath(page) {
@@ -177,7 +172,6 @@ document.addEventListener("DOMContentLoaded",()=>{
               return path.join(" > ");
             }
             
-            tabTitle.textContent = getFullPath(data);
             
 
             //컨텐츠가 변경이되면 기존  history 클리어
