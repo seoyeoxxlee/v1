@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     // API
     const API = 'https://kdt-api.fe.dev-cos.com/documents';
     const pageCreateButton = document.getElementById('pageCreateButton');
+        // 문서 새 페이지 만들기
         pageCreateButton.addEventListener('click',(event)=>{
             fetch(API, {
                 method: 'POST',
@@ -19,59 +20,44 @@ document.addEventListener("DOMContentLoaded",()=>{
         });
 
         // 문서 트리형식
-        function treeList(data){    
-            const deleteBtn = document.createElement('a');
-            deleteBtn.textContent = "삭제";
-            deleteBtn.href = "#";
-            deleteBtn.classList.add("deletePage");
-            deleteBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
-                    deletePage(data); // API에서 삭제 요청
-                    e.target.parentElement.remove(); // 화면에서 제거
-                }
-            });
+        const root = document.getElementById("notionList");
+        function createTreeView(menu, currentNode) {
+            for (let i = 0; i < menu.length; i++) {
+                let menuitem = document.createElement("li");
+                if (menu[i].documents !== undefined) {
+                // // 각 메뉴에 자식 노드가 있으면 
+                const a = document.createElement("a");
+                a.href="/page"
+                a.id=menu[i].id;
+                a.textContent = menu[i].title;
 
-            // 동작 부분
-            const ul = document.createElement('ul');
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            const sub = data["documents"];
-
-            a.href ='/page';
-            a.id = data["id"];
-            a.textContent= data['title'] ==""?"새페이지":data["title"];
-            li.append(a);
-            li.append(deleteBtn);
-
-            if(sub.length != 0){
-                sub.forEach((el)=>{
-                    const li2 = document.createElement('li');
-                    const a2 = document.createElement('a');
-                    const deleteBtn2 = document.createElement('a');
-                    deleteBtn2.textContent = "삭제";
-                    deleteBtn2.href = "#";
-                    deleteBtn2.classList.add("deletePage");
-                    deleteBtn2.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
-                            deletePage(el); // API에서 삭제 요청
-                            e.target.parentElement.remove(); // 화면에서 제거
-                        }
-                    });
-                    
-                    a2.href ='/page';
-                    a2.id = el["id"];
-                    a2.textContent= el['title'] ==""?"새페이지":el["title"];
-                    li2.append(a2);
-                    li2.append(deleteBtn2);
-                    ul.append(li2);
+                const deleteBtn = document.createElement('a');
+                deleteBtn.textContent = "삭제";
+                deleteBtn.href = "#";
+                deleteBtn.classList.add("deletePage");
+                deleteBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
+                        deletePage(menu[i]); // API에서 삭제 요청
+                        e.target.parentElement.remove(); // 화면에서 제거
+                    }
                 });
-                li.append(ul);
-            }
+                // 새로운 list 만들 ul
+                // 자식노드의 자식노드 list
+                const newul = document.createElement("ul");
+                menuitem.append(a, deleteBtn ,newul); // li에 넣어줌
+                currentNode.append(menuitem);
 
-            notionList.append(li);
+                createTreeView(menu[i].documents, newul); // 자식 노드가 있으니까 재귀 한번 더돔
+                } else {
+                // 메뉴에 자식 노드가 없으면 -> li 엘리먼트 안에 단순히 이름만 표시
+                menuitem.textContent = menu[i].title;
+                currentNode.append(menuitem);
+                // 자식 노드가 없으므로 재귀 돌릴 필요 없음.
+                }
+            }
         }
+        
         
         //페이지 만들기
         const notionList = document.getElementById('notionList');
@@ -117,13 +103,7 @@ document.addEventListener("DOMContentLoaded",()=>{
               .then((response) => response.json())
              // .then((json) => console.log(json));
               .then((json) => {
-                    json.forEach(
-                        (data) =>{
-                            treeList(data)
-                        }
-                    )
-                    //목록중 첫번째 페이지 내용을 보여줌
-                    // setContents(json[0]);
+                   createTreeView(json, root);
               })
         }
         getPageTitleList();
