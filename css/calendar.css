@@ -1,3 +1,11 @@
+.calendar-container {
+    width: 100%;
+    min-height: 500px; 
+    aspect-ratio: 16 / 9;
+    max-width: 1200px;
+    margin: 0 auto; 
+}
+
 .calendar-header {
     display: flex;
     justify-content: space-between;
@@ -46,6 +54,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 5px;
+    min-height: 350px;
 }
 
 #selected-date {
@@ -100,6 +109,7 @@
     cursor: pointer;
     color: #1e1d28;
 }
+
 .dark-mode #close-popup {
     color: #fff;
 }
@@ -123,22 +133,30 @@
 
 .dark-mode #calendar-title {
     background: #1e1d28;
+    color: #ddd;
 }
 
 #calendar-content {
     font-size: 18px;
     margin-bottom: 18px;
+    width: 100%;
+    min-height: 250px;
+    
 }
 
 .dark-mode #calendar-content {
     background: #1e1d28;
+    color: #ddd;
 }
 
-.button-group {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
-	margin-top: 10px;
+#button-group {
+    display: flex;
+    justify-content: center; 
+    gap: 10px;
+    position: fixed;  
+    left: 50%;        
+    transform: translateX(-50%); 
+    width: auto;      
 }
 
 #insert-btn,

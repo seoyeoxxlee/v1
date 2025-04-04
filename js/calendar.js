@@ -10,7 +10,7 @@ export function CalendarEventsBind() {
 
     let selectedDate = null; 
     let selectedDocId = null;
-
+    
     async function renderCalendar() {
         const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
         const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -113,23 +113,28 @@ export function CalendarEventsBind() {
         //입력	
         document.getElementById("calendar-title").value = "";  
         document.getElementById("calendar-content").value = "";
+
+        const insertBtn = document.getElementById("insert-btn");
+        const updateBtn = document.getElementById("update-btn");
+        const deleteBtn = document.getElementById("delete-btn");
+        const mainDarkMode = document.querySelector('main');
         
         if (e.target.classList.contains("date") && e.target.dataset.value) {
             selectedDate = e.target.dataset.value;
             document.getElementById("selected-date").textContent = selectedDate /*+ "일"*/;
             document.getElementById("popup").style.display = "flex";
-            document.getElementById("insert-btn").style.display = "inline-block";
-            document.getElementById("update-btn").style.display = "none";
-            document.getElementById("delete-btn").style.display = "none";
+            insertBtn.style.display = "inline-block";
+            updateBtn.style.display = "none";
+            deleteBtn.style.display = "none";
             return;
         }
 
         //상세
         if (e.target.classList.contains("popupView")) {
             const docId = e.target.dataset.id;
+            
             selectedDate = e.target.parentElement.dataset.value;
             selectedDocId = e.target.dataset.id;
-
             try {
                 const popupViewApi = await fetch("https://kdt-api.fe.dev-cos.com/documents/" + docId, {
                     headers: {
@@ -144,15 +149,29 @@ export function CalendarEventsBind() {
                     alert("팝업 불러오기 실패: " + errorText);
                     return;
                 }
-
+                
                 const view = await popupViewApi.json();
                 document.getElementById("selected-date").textContent = selectedDate /*+ "일"*/;
                 document.getElementById("calendar-title").value = view.title;
                 document.getElementById("calendar-content").value = view.content;
                 document.getElementById("popup").style.display = "flex";
-                document.getElementById("insert-btn").style.display = "none";
-                document.getElementById("update-btn").style.display = "inline-block";
-                document.getElementById("delete-btn").style.display = "inline-block";
+                if (mainDarkMode.classList.contains('dark-mode')) {
+                    insertBtn.style.display = "none";
+                    updateBtn.style.display = "inline-block";
+                    updateBtn.style.backgroundColor = "#1e1d28";
+                    updateBtn.style.color = "#fff";
+                    deleteBtn.style.display = "inline-block";
+                    deleteBtn.style.backgroundColor = "#1e1d28";
+                    deleteBtn.style.color = "#fff";
+                }else{
+                    insertBtn.style.display = "none";
+                    updateBtn.style.display = "inline-block";
+                    updateBtn.style.backgroundColor = "#fff";
+                    updateBtn.style.color = "#1e1d28";
+                    deleteBtn.style.display = "inline-block";
+                    deleteBtn.style.backgroundColor = "#fff";
+                    deleteBtn.style.color = "#1e1d28";
+                }
             } catch (err) {
                 console.error("팝업 에러:", err);
                 alert("팝업 에러");
