@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     // API
     const API = 'https://kdt-api.fe.dev-cos.com/documents';
     const pageCreateButton = document.getElementById('pageCreateButton');
+        // 문서 새 페이지 만들기
         pageCreateButton.addEventListener('click',(event)=>{
             fetch(API, {
                 method: 'POST',
@@ -16,9 +17,49 @@ document.addEventListener("DOMContentLoaded",()=>{
             })
             .then((response) => response.json())
             .then((json) => makePageTitle(json))
-        })
+        });
 
-    //페이지 만들기
+        // 문서 트리형식
+        const root = document.getElementById("notionList");
+        function createTreeView(menu, currentNode) {
+            for (let i = 0; i < menu.length; i++) {
+                let menuitem = document.createElement("li");
+                if (menu[i].documents !== undefined) {
+                // // 각 메뉴에 자식 노드가 있으면 
+                const a = document.createElement("a");
+                a.href="/page"
+                a.id=menu[i].id;
+                a.textContent = menu[i].title;
+
+                const deleteBtn = document.createElement('a');
+                deleteBtn.textContent = "삭제";
+                deleteBtn.href = "#";
+                deleteBtn.classList.add("deletePage");
+                deleteBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (confirm("정말 삭제하시겠습니까?")) { // 사용자에게 확인받기
+                        deletePage(menu[i]); // API에서 삭제 요청
+                        e.target.parentElement.remove(); // 화면에서 제거
+                    }
+                });
+                // 새로운 list 만들 ul
+                // 자식노드의 자식노드 list
+                const newul = document.createElement("ul");
+                menuitem.append(a, deleteBtn ,newul); // li에 넣어줌
+                currentNode.append(menuitem);
+
+                createTreeView(menu[i].documents, newul); // 자식 노드가 있으니까 재귀 한번 더돔
+                } else {
+                // 메뉴에 자식 노드가 없으면 -> li 엘리먼트 안에 단순히 이름만 표시
+                menuitem.textContent = menu[i].title;
+                currentNode.append(menuitem);
+                // 자식 노드가 없으므로 재귀 돌릴 필요 없음.
+                }
+            }
+        }
+        
+        
+        //페이지 만들기
         const notionList = document.getElementById('notionList');
         const makePageTitle = (data) =>{
              const li = document.createElement('li');
@@ -33,27 +74,6 @@ document.addEventListener("DOMContentLoaded",()=>{
              a.textContent= data['title'] ==""?"새페이지":data["title"];
              li.appendChild(a);
              
-
-             //  삭제기능
-             const deletePage = (data) => {
-                const API = 'https://kdt-api.fe.dev-cos.com/documents/'+ data["id"]; // 삭제할 문서의 API 경로
-                fetch(API, {
-                    method: 'DELETE',
-                    headers: {
-                        "x-username": "team7_pages"
-                    }
-                })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("삭제 실패!");
-                    }
-                    console.log(`페이지 ${data.id} 삭제 완료`);
-                })
-                .catch((error) => {
-                    console.error("삭제 중 오류 발생:", error);
-                });
-            };
-            
             const deleteBtn = document.createElement('a');
             deleteBtn.textContent = "삭제";
             deleteBtn.href = "#";
@@ -69,6 +89,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             
             li.append(deleteBtn);
             notionList.appendChild(li);
+            a.click();
             
         };
 
@@ -82,13 +103,7 @@ document.addEventListener("DOMContentLoaded",()=>{
               .then((response) => response.json())
              // .then((json) => console.log(json));
               .then((json) => {
-                    json.forEach(
-                        (data) =>{
-                            makePageTitle(data)
-                        }
-                    )
-                    //목록중 첫번째 페이지 내용을 보여줌
-                    // setContents(json[0]);
+                   createTreeView(json, root);
               })
         }
         getPageTitleList();
@@ -101,6 +116,15 @@ document.addEventListener("DOMContentLoaded",()=>{
                     "x-username" : "team7_pages"
                 },
             })
+            .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("삭제 실패!");
+                    }
+                    console.log(`페이지 ${data.id} 삭제 완료`);
+                })
+                .catch((error) => {
+                    console.error("삭제 중 오류 발생:", error);
+                });
         }
 
         //목록에서 페이지를 선택 했을때 내용 불러오기
@@ -114,11 +138,6 @@ document.addEventListener("DOMContentLoaded",()=>{
             pageId.textContent =data['id'];
             contentTitle.innerHTML=data['title'];
             contentBody.innerHTML=data['body']
-
-            //상단바에 현재 페이지명 뜨게
-            const tabTitle = document.getElementById("tabTitle");
-
-            
             
             // 계층 구조를 대비한 경로 생성 함수
             function getFullPath(page) {
@@ -133,7 +152,6 @@ document.addEventListener("DOMContentLoaded",()=>{
               return path.join(" > ");
             }
             
-            tabTitle.textContent = getFullPath(data);
             
 
             //컨텐츠가 변경이되면 기존  history 클리어

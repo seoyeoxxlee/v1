@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     let pageTitle;
     let pageText;
     let lineList;
-    let receivedData;// 현재 글 쓰그 있는 페이지 id 값
+    let receivedData =0;// 현재 글 쓰그 있는 페이지 id 값
 
     const main = document.querySelector('main');
 
@@ -47,9 +47,13 @@ document.addEventListener("DOMContentLoaded",()=>{
           console.log("1",e.target)
           e.preventDefault();
           e.target.addEventListener("click", router(e));
-          receivedData = e.target.id;
+
+        receivedData = e.target.id;  // id 대신 a 태그 안의 텍스트 가져오기
+        receivedContent = e.target.textContent; 
+        tabTitle.textContent = receivedContent; // tabTitle에 적용
         //   routerAfter();
         }
+
     });
 
     // 뒤로가기가 눌리면
@@ -68,41 +72,42 @@ document.addEventListener("DOMContentLoaded",()=>{
     //     routerAfter();
     // });
     function routerAfter(){
+        if(receivedData != null && receivedData != undefined){
+            setTimeout(()=>{
+                pageTitle = main.querySelector('#pageTitle');
+                pageText = main.querySelector('#pageText');
+                lineList = main.querySelectorAll('#pageText .line .text');
 
-        setTimeout(()=>{
-            pageTitle = main.querySelector('#pageTitle');
-            pageText = main.querySelector('#pageText');
-            lineList = main.querySelectorAll('#pageText .line .text');
+                // 페이지 시작시 pageTitle에 focus
+                pageTitle.focus();
+                getPage();
+                lineAddEvent();
 
-            // 페이지 시작시 pageTitle에 focus
-            pageTitle.focus();
-            getPage();
-            lineAddEvent();
-
-            // 제목에서 엔터 쳤을때 본문에 텍스트 박스 만들기
-            pageTitle.addEventListener('keyup',(e)=>{
-                if(e.keyCode == 13){
-                    e.preventDefault();
-                    pageText.prepend(textLineCreate());
-                    // lineInit();
-                    lineList = main.querySelectorAll('#pageText .line .text')
-                    lineList[0].focus();
-                }else if(e.keyCode == 40){
-                    lineList[0].focus();
-                }
-                save();
-            });
-            // 본문 백그라운드 클릭시 라인 추가
-            pageText.addEventListener('click',(e)=>{
-                if(e.target.id === "pageText"){
-                    e.currentTarget.append(textLineCreate());
-                    // 생성된 마지막 요소에 포커스
-                    main.querySelectorAll('#pageText .line .text')[document.querySelectorAll('#pageText .line .text').length-1].focus();
+                // 제목에서 엔터 쳤을때 본문에 텍스트 박스 만들기
+                pageTitle.addEventListener('keyup',(e)=>{
+                    if(e.keyCode == 13){
+                        e.preventDefault();
+                        pageText.prepend(textLineCreate());
+                        // lineInit();
+                        lineList = main.querySelectorAll('#pageText .line .text')
+                        lineList[0].focus();
+                    }else if(e.keyCode == 40){
+                        lineList[0].focus();
+                    }
                     save();
-                }
-            });
+                });
+                // 본문 백그라운드 클릭시 라인 추가
+                pageText.addEventListener('click',(e)=>{
+                    if(e.target.id === "pageText"){
+                        e.currentTarget.append(textLineCreate());
+                        // 생성된 마지막 요소에 포커스
+                        main.querySelectorAll('#pageText .line .text')[document.querySelectorAll('#pageText .line .text').length-1].focus();
+                        save();
+                    }
+                });
 
-        },100)
+            },500)
+        }
     }
     
      
@@ -176,8 +181,9 @@ document.addEventListener("DOMContentLoaded",()=>{
         .catch((error)=>{
             console.log(error)
         });
-
-        document.getElementById(receivedData).textContent = pageTitle.value;
+        if(pageTitle.value != ""){
+            document.getElementById(receivedData).textContent = pageTitle.value;
+        }
     }
     
 
@@ -267,15 +273,15 @@ document.addEventListener("DOMContentLoaded",()=>{
         if(subPageCreateBtn.classList.contains('subPageCreate')){
             fetch(API, {
                 method: 'POST',
-            body: JSON.stringify({
-                title: '',
-                parent: receivedData
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                "x-username" : "team7_pages"
-            },
-            })
+                body: JSON.stringify({
+                    title: '',
+                    parent: receivedData
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    "x-username" : "team7_pages"
+                },
+                })
             .then((response) => response.json())
             .then((json) => {
                 subPageCreateBtn.parentElement.parentElement.querySelector('.text').append(subPageCreate(json)); 
