@@ -141,7 +141,7 @@
     margin-bottom: 18px;
     width: 100%;
     min-height: 250px;
-    
+    resize: none;
 }
 
 .dark-mode #calendar-content {
