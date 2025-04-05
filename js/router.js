@@ -13,7 +13,7 @@ const routes = {
 
   "/trashcan": "./pages/trashcan.html",
 
-  "/page" : "./pages/page.html"
+  // "/page" : "./pages/page.html"
 
 };
 

@@ -1,121 +1,66 @@
+
 document.addEventListener("DOMContentLoaded",()=>{
     
-    let pageHistory = [];
-    let pageHistoryNum = 0;
     let pageTitle;
     let pageText;
     let lineList;
-    let receivedData =0;// 현재 글 쓰그 있는 페이지 id 값
+    let receivedData;// 현재 글 쓰그 있는 페이지 id 값
 
+    // API에 PUT
+    const API = 'https://kdt-api.fe.dev-cos.com/documents';
     const main = document.querySelector('main');
 
-    const routes = {
-        "/page" : "./pages/page.html"
-    };
     // 페이지를 변경하는 함수
     function router(event) {
         event.preventDefault();
-
+    
         const href = event.target.getAttribute("href");
-
+    
         window.history.pushState({ path: href }, "", href);
         handleLocation();
-        routerAfter();
     }
     
-   // 경로에 따라 페이지 변경
-   async function handleLocation() {
-     const pathname = window.location.pathname;
-     const route = routes[pathname];
-     if (pathname === "/page") {
-        if (route) {
-            const data = await (await fetch(route)).text();
+    // 경로에 따라 페이지 변경
+    async function handleLocation() {
+        const pathname = "/"+window.location.pathname.split("/")[1];
+
+        if(pathname == "/page"){
+            receivedData=window.location.pathname.split("/")[2];
+        }
+
+        const route = "/pages/page.html";
+        
+        const data = await (await fetch(route)).text();
+        let promise = new Promise((resolve, reject) => {
             document.querySelector("main").innerHTML = data;
-            pageHistory[pageHistoryNum] = receivedData;
-            console.log(pageHistory,pageHistoryNum);
-        }
-     }
-   }
+        });    
 
 
-    // href가 /page인 버튼 누르면 해당 페이지 생성
-    document.addEventListener('click',(e)=>{
-        let textLine = e.target;
-        let linePrev = textLine.parentElement.previousElementSibling;
-        pageHistoryNum++;
-        if(textLine.getAttribute('href') == "/page"){
-          console.log("1",e.target)
-          e.preventDefault();
-          e.target.addEventListener("click", router(e));
-
-        receivedData = e.target.id;  // id 대신 a 태그 안의 텍스트 가져오기
-        receivedContent = e.target.textContent; 
-        tabTitle.textContent = receivedContent; // tabTitle에 적용
-        //   routerAfter();
-        }
-
-    });
-
-    // 뒤로가기가 눌리면
-    window.addEventListener("popstate",(e)=>{
-        console.log(e);
-        if(pageHistoryNum > 0){
-            pageHistoryNum--;
-            receivedData = pageHistory[pageHistoryNum];
-            routerAfter();
-        }
-    });
-    // 앞으로가기 안댐
-    // window.addEventListener("pushstate",(e)=>{
-    //     pageHistoryNum++
-    //     receivedData = pageHistory[pageHistoryNum];
-    //     routerAfter();
-    // });
-    function routerAfter(){
-        if(receivedData != null && receivedData != undefined){
-            setTimeout(()=>{
-                pageTitle = main.querySelector('#pageTitle');
-                pageText = main.querySelector('#pageText');
-                lineList = main.querySelectorAll('#pageText .line .text');
-
-                // 페이지 시작시 pageTitle에 focus
-                pageTitle.focus();
-                getPage();
-                lineAddEvent();
-
-                // 제목에서 엔터 쳤을때 본문에 텍스트 박스 만들기
-                pageTitle.addEventListener('keyup',(e)=>{
-                    if(e.keyCode == 13){
-                        e.preventDefault();
-                        pageText.prepend(textLineCreate());
-                        // lineInit();
-                        lineList = main.querySelectorAll('#pageText .line .text')
-                        lineList[0].focus();
-                    }else if(e.keyCode == 40){
-                        lineList[0].focus();
-                    }
-                    save();
-                });
-                // 본문 백그라운드 클릭시 라인 추가
-                pageText.addEventListener('click',(e)=>{
-                    if(e.target.id === "pageText"){
-                        e.currentTarget.append(textLineCreate());
-                        // 생성된 마지막 요소에 포커스
-                        main.querySelectorAll('#pageText .line .text')[document.querySelectorAll('#pageText .line .text').length-1].focus();
-                        save();
-                    }
-                });
-                getPageTitleList();
-            },500)
-        }
+        await routerAfter(receivedData);
     }
-    
-     
-    // API에 PUT
-    const API = 'https://kdt-api.fe.dev-cos.com/documents';
+    document.addEventListener("click",(e)=>{
+        if((e.target.classList.contains("pageLink") && e.target.href.split("/")[3]) 
+                || e.target.classList.contains("subPage")){
+            router(e);
+
+            // 헤더 페이지명 바뀌는 부분 backward, forward 안되서 수정 함. 아래 코드는 주석
+            // receivedContent = e.target.textContent; 
+            // tabTitle.textContent = receivedContent;
+        }
+    })
+    window.addEventListener("popstate", handleLocation);
+
+    function routerAfter(id){   
+        
+        pageTitle = main.querySelector("#pageTitle");
+        pageText = main.querySelector("#pageText");
+
+        getPage(id);
+    }
+
     // 페이지 가져오기 함수
-    const getPage=()=>{
-        fetch(API+"/"+receivedData,{
+    function getPage(id){
+        fetch(API+"/"+id,{
             headers: {
                 "x-username" : "team7_pages"
             }
@@ -124,37 +69,42 @@ document.addEventListener("DOMContentLoaded",()=>{
         .then((response) => response.json())
         .then((page) => { 
             if(page != undefined){
-                setPage(page);  
+                setPage(page);
             } 
-        })
+        });
     }
     
 
     // 페이지 셋팅 함수
-    const setPage =(data) =>{
-        const prePageText = document.createElement("p")
+    async function setPage(data){
+        // 헤더 페이지명 backward, forward 가능하게
+        tabTitle.textContent = data['title'] == "" ? "새페이지" : data['title'];
         pageTitle.value=data['title'];
-        // pageText.innerHTML=data['content'];
-        prePageText.innerHTML=data['content'];
-    
-        const subPages = prePageText.querySelectorAll('.subPage');
-        if(subPages.length !== 0){
+       
+        await eventAdd();
+
+        const prePageText = document.createElement("p");
+        prePageText.innerHTML = data['content'];
+        if(prePageText.querySelectorAll('.subPage').length > 0){
+            const subPages = prePageText.querySelectorAll('.subPage');
             //서브페이지가 존재하면 이름 바꿔주기
-            subPages.forEach((page,i)=>{
-                fetch(API+"/"+page.id,{
+            subPages.forEach((sub,i)=>{
+                fetch(API+"/"+sub.id.split("s")[1],{
                     headers: {
                         "x-username" : "team7_pages"
                     }
                 })
                 .then((response) => {
                     if (!response.ok) {
-                        throw page.remove();
-                        console.log("사라진페이지")
+                        sub.remove();
+                        console.log("삭제된페이지");  
+                        // pageText.innerHTML = prePageText.innerHTML;
                     }
-                    return response.json()
+
+                    return response.json();
                 })
-                .then((data) => {
-                    data["title"]==="" ? "새페이지" : page.textContent=data["title"];
+                .then((json) => {
+                    json["title"]==="" ? sub.textContent="새페이지" : sub.textContent=json["title"];
                 })
                 .then(()=>{
                     pageText.innerHTML = prePageText.innerHTML;
@@ -164,13 +114,47 @@ document.addEventListener("DOMContentLoaded",()=>{
                 })     
             });
         }else{
-            pageText.innerHTML = prePageText.innerHTML;   
+            pageText.innerHTML = data['content'];
         }
+
+    }
+
+    // 셋팅 후 요소들에 함수 넣기
+    function eventAdd(){
+        // 페이지 시작시 pageTitle에 focus
+        pageTitle.focus();
+        // 제목에서 엔터 쳤을때 본문에 텍스트 박스 만들기 
+        
+        pageTitle.addEventListener('keyup',(e)=>{
+            if(e.keyCode == 13){
+                e.preventDefault();
+                pageText.prepend(textLineCreate());
+                // lineInit();
+                lineList = main.querySelectorAll('#pageText .line .text')
+                lineList[0].focus();
+            }else if(e.keyCode == 40){
+                lineList[0].focus();
+            }
+            save(receivedData);
+        });
+        // 본문 백그라운드 클릭시 라인 추가
+        pageText.addEventListener('click',(e)=>{
+            if(e.target.id === "pageText"){
+                e.currentTarget.append(textLineCreate());
+                // 생성된 마지막 요소에 포커스
+                document.querySelectorAll('#pageText .line .text')[document.querySelectorAll('#pageText .line .text').length-1].focus();
+                
+                save(receivedData);
+            }
+        });
+       
+        lineAddEvent();
     }
 
     // 저장함수
-    function save(){
-        fetch(API+'/'+receivedData, {
+    function save(id){
+        console.log("SAVEEEEEEEEEEEEEEEEEEEEEE");
+        fetch(API+'/'+id, {
             method: 'PUT',
             body: JSON.stringify({
                 title: pageTitle.value,
@@ -185,9 +169,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         .catch((error)=>{
             console.log(error)
         });
-        if(pageTitle.value != ""){
-            document.getElementById(receivedData).textContent = pageTitle.value;
-        }
+        
+        document.getElementById(id).textContent = pageTitle.value;
     }
     
 
@@ -195,7 +178,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const textLineCreate = ()=>{
         const line = document.createElement('div');
         const lineSetBtns = `<ul class="lineSetBtns"> 
-                                <a class="subPageCreate" href="#" title="페이지"><span class="material-symbols-outlined">add</span></a>
+                                <a class="subPageCreate" href="" title="페이지"><span class="material-symbols-outlined">add</span></a>
                              </ul> 
                             <div class="text" contenteditable="true"></div>`
         line.classList.add('line');
@@ -264,17 +247,18 @@ document.addEventListener("DOMContentLoaded",()=>{
         document.addEventListener('keyup',(e)=>{
             let textLine = e.target;
             if(textLine.classList.contains('text')){
-                save();
+                save(receivedData);
             }
         })
     }
     
 
-    //하위페이지 이름 바뀌는 기능
+    //하위페이지가 생성되고 이동
     document.addEventListener('click',(e)=>{
         
         let subPageCreateBtn = e.target.parentElement;
         if(subPageCreateBtn.classList.contains('subPageCreate')){
+            e.preventDefault();
             fetch(API, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -290,10 +274,10 @@ document.addEventListener("DOMContentLoaded",()=>{
             .then((json) => {
                 console.log(json["id"])
                 subPageCreateBtn.parentElement.parentElement.querySelector('.text').append(subPageCreate(json)); 
-                save();
+                save(receivedData);
                 // 하위 페이지 생성 버튼 누르자 마자 하위페이지로 이동
-                receivedData = json["id"];
-                console.log(receivedData)
+                document.querySelector(`#s${json["id"]}`).click();
+                getPageTitleList()
             })
 
         }
@@ -301,14 +285,11 @@ document.addEventListener("DOMContentLoaded",()=>{
     function subPageCreate(data){
         const subPageLine = document.createElement('a');
         subPageLine.classList.add('subPage');
-        subPageLine.href = "/page";
+        subPageLine.href = `/page/${data["id"]}`;
         subPageLine.setAttribute("contenteditable",'false');
-        subPageLine.id = data["id"];
+        subPageLine.id = "s"+data["id"];
         subPageLine.textContent = data['title'] ==""?"새페이지":data["title"];
-        subPageLine.addEventListener('click',(e)=>{
-            e.preventDefault();
-        });
-       
+
         return subPageLine;
     }
 
@@ -320,9 +301,10 @@ document.addEventListener("DOMContentLoaded",()=>{
             if (menu[i].documents !== undefined) {
             // // 각 메뉴에 자식 노드가 있으면 
             const a = document.createElement("a");
-            a.href="/page"
+            a.href="/page/"+menu[i].id;
             a.id=menu[i].id;
-            a.textContent = menu[i].title;
+            a.textContent = menu[i].title == "" ? "새페이지" : menu[i].title;
+            a.classList.add('pageLink');
 
             const deleteBtn = document.createElement('a');
             deleteBtn.textContent = "삭제";

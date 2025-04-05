@@ -27,10 +27,10 @@ document.addEventListener("DOMContentLoaded",()=>{
                 if (menu[i].documents !== undefined) {
                 // // 각 메뉴에 자식 노드가 있으면 
                 const a = document.createElement("a");
-                a.href="/page"
+                a.href="/page/"+menu[i].id;
                 a.id=menu[i].id;
-                a.textContent = menu[i].title;
-
+                a.textContent = menu[i].title == "" ? "새페이지" : menu[i].title;
+                a.classList.add('pageLink');
                 const deleteBtn = document.createElement('a');
                 deleteBtn.textContent = "삭제";
                 deleteBtn.href = "#";
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded",()=>{
              const a = document.createElement('a');
              const sub = data["documents"];
             
-             a.href ='/page';
+             a.href ='/page/'+data["id"];
              //고유 아이디로 링크아이디 설정
              a.id = data["id"];
              //페이지의 제목이 빈 문자열인경우 새페이지로 표현
